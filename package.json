@@ -1,0 +1,38 @@
+{
+  "name": "custom-ui-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.0.0",
+  "engines": {
+    "node": ">=20.19.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter @custom-ui/vue build",
+    "docs:dev": "pnpm --filter @custom-ui/docs dev",
+    "docs:build": "pnpm --filter @custom-ui/docs build",
+    "example:dev": "pnpm --filter @custom-ui/example-vite dev",
+    "lint": "eslint .",
+    "typecheck": "pnpm --filter @custom-ui/vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
+    "test": "vitest run",
+    "create-component": "tsx scripts/create-component.ts",
+    "check-component": "tsx scripts/check-component.ts",
+    "generate-api": "tsx scripts/generate-api.ts",
+    "release:check": "tsx scripts/release-check.ts"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "eslint": "^9.39.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4",
+    "vitest": "^4.0.13",
+    "vue": "^3.5.25",
+    "vue-tsc": "^3.1.5"
+  }
+}
