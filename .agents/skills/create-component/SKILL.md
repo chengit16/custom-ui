@@ -1,23 +1,24 @@
 ---
 name: create-component
-description: Create or update a Custom UI Vue component using the project automation workflow.
+description: 使用 Custom UI 的自动化流程创建或更新 Vue 组件。
 ---
 
-# Create Component
+# 创建组件
 
-Use this skill when the user asks to add or update a component in `@custom-ui/vue`.
+当用户要求在 `@custom-ui/vue` 中新增或更新组件时使用此技能。
 
-## Required Flow
+## 必须流程
 
-1. Read `.agents/skills/development-spec/SKILL.md`.
-2. Run `pnpm create-component {ComponentName}` for new components.
-3. Implement the component in `packages/vue/src/components/{kebab-name}/`.
-4. Add or update real demo files in `demo/`.
-5. Update `api.ts`.
-6. Run `pnpm generate-api {ComponentName}`.
-7. Update `docs/components/{kebab-name}.md` to use `DemoBlock`.
-8. Run `pnpm check-component {ComponentName}`.
-9. Run the component test.
-10. Request code review using `code-reviewer`.
+1. 先阅读 `.agents/skills/development-spec/SKILL.md`。
+2. 新组件先运行 `pnpm create-component {ComponentName}`。
+3. 在 `packages/vue/src/components/{kebab-name}/` 中实现组件。
+4. 编写或更新真实 demo 文件。
+5. 更新 `api.ts`。
+6. 运行 `pnpm generate-api {ComponentName}`。
+7. 更新 `docs/components/{kebab-name}.md`，并用 `DemoBlock` 绑定 demo 和源码。
+8. 运行 `pnpm check-component {ComponentName}`。
+9. 运行该组件的定向测试，例如 `pnpm test packages/vue/src/components/{kebab-name}/__tests__/{kebab-name}.test.ts`。
+10. 请求 `code-reviewer` 做代码审查。
+11. 请求 `docs-writer` 做文档审查，确认文档页和 demo 源码一致。
 
-Do not skip docs, demo, API metadata, or component checks.
+不要跳过文档、demo、API 元数据或组件检查。

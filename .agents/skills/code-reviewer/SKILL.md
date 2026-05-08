@@ -1,21 +1,22 @@
 ---
 name: code-reviewer
-description: Review Custom UI Vue component code for API quality, Naive UI wrapping, docs, demos, and tests.
+description: 审查 Custom UI Vue 组件的 API 质量、Naive UI 封装、文档、示例和测试。
 ---
 
-# Code Reviewer
+# 代码审查
 
-Use this skill for component review.
+在做组件审查时使用此技能。
 
-## Review Checklist
+## 审查清单
 
-- Component follows the required directory structure.
-- Public component name uses `Custom{PascalName}`.
-- Props are typed and documented through `api.ts`.
-- Naive UI behavior is reused where possible.
-- Demo files compile and show real usage.
-- VitePress docs reference demos and generated API docs.
-- Tests cover at least public export and any custom behavior.
-- `pnpm check-component {ComponentName}` passes.
+- 组件目录结构是否符合规范。
+- 对外组件名是否使用 `Custom{PascalName}`。
+- Props 是否有完整类型，并通过 `api.ts` 文档化。
+- 是否尽量复用 Naive UI 行为，而不是重新造轮子。
+- demo 文件是否可编译，并且确实展示真实用法。
+- VitePress 文档是否引用了 demo 和生成的 API 文档。
+- 测试是否覆盖公共导出和自定义行为。
+- `pnpm check-component {ComponentName}` 是否通过。
+- 审查时要同时看导出、可访问性、文档一致性，以及是否违反 `development-spec`。
 
-Report blockers first. If there are no blockers, say the component passes review and list residual risks.
+先报告阻断项；如果没有阻断项，再说明通过并列出残余风险。

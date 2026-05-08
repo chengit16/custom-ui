@@ -1,33 +1,40 @@
 ---
 name: development-spec
-description: Custom UI Vue component library standards for components, docs, demos, tests, and release checks.
+description: Custom UI Vue 组件库的开发规范，涵盖组件、文档、示例、测试和发布检查。
 ---
 
-# Development Spec
+# 开发规范
 
-Use this skill whenever creating, reviewing, or documenting `@custom-ui/vue` components.
+在创建、审查或编写 `@custom-ui/vue` 组件时使用此技能。
 
-## Component Rules
+## 组件规范
 
-- Components live in `packages/vue/src/components/{kebab-name}/`.
-- Main component file is `{kebab-name}.vue`.
-- Props live in `props.ts`.
-- Public exports live in `index.ts`.
-- API metadata lives in `api.ts`.
-- Demos live in `demo/*.vue`.
-- Tests live in `__tests__/{kebab-name}.test.ts`.
-- Component names use `Custom{PascalName}`.
-- Wrap Naive UI components instead of recreating behavior when Naive UI already provides it.
+- 组件位于 `packages/vue/src/components/{kebab-name}/`。
+- 主组件文件是 `{kebab-name}.vue`。
+- Props 放在 `props.ts`。
+- 对外导出放在 `index.ts`。
+- API 元数据放在 `api.ts`。
+- Demo 放在 `demo/*.vue`。
+- 测试放在 `__tests__/{kebab-name}.test.ts`。
+- 组件命名使用 `Custom{PascalName}`。
+- 如果 Naive UI 已经提供了对应行为，优先封装而不是重新实现。
+- Provider / 主题相关能力优先封装在独立文件中，保持组件入口清晰。
+- 组件与示例优先使用 Vue 3 + TS + `<script setup>` 风格。
+- Props、事件、插槽和外部可见 API 要保持最小、明确、可文档化。
 
-## Documentation Rules
+## 文档规范
 
-- Component docs live in `docs/components/{kebab-name}.md`.
-- Use real demo files as the source of truth.
-- Use `DemoBlock` for demo preview and source display.
-- Generate API tables with `pnpm generate-api {ComponentName}`.
+- 组件文档位于 `docs/components/{kebab-name}.md`。
+- 以真实 demo 文件作为唯一事实来源。
+- 使用 `DemoBlock` 展示 demo 预览和源码。
+- 使用 `pnpm generate-api {ComponentName}` 生成 API 表格。
+- 文档页需要能直接渲染真实 demo，并能展示同一份源码。
+- 文档中如果引用 API 表格，优先引用 `docs/components/generated/{kebab-name}-api.md`。
 
-## Verification Rules
+## 校验规范
 
-- Run `pnpm check-component {ComponentName}` before calling a component complete.
-- Run tests and type checks after implementation.
-- Run `pnpm release:check` before any release decision.
+- 在确认组件完成前运行 `pnpm check-component {ComponentName}`。
+- 实现完成后运行测试和类型检查。
+- 在做任何发布决策前运行 `pnpm release:check`。
+- 审查组件时要同时关注可访问性、Naive UI 复用、类型安全和导出稳定性。
+- 如果组件涉及 API 元数据，必须让 `api.ts` 与文档保持同步。
