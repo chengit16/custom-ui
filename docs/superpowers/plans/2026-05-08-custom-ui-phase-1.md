@@ -1272,6 +1272,7 @@ run('pnpm', ['typecheck']);
 run('pnpm', ['test']);
 run('pnpm', ['build']);
 run('pnpm', ['docs:build']);
+run('pnpm', ['--filter', '@custom-ui/example-vite', 'build']);
 run('pnpm', ['--filter', '@custom-ui/vue', 'exec', 'npm', 'pack', '--dry-run']);
 
 console.log('\nRelease dry-run completed without publishing.');
