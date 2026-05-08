@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { fileURLToPath } from 'node:url';
 
 export default defineConfig({
   title: 'Custom UI',
@@ -31,7 +32,7 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@custom-ui/vue': new URL('../../packages/vue/src/index.ts', import.meta.url).pathname
+        '@custom-ui/vue': fileURLToPath(new URL('../../packages/vue/src/index.ts', import.meta.url))
       }
     }
   }
