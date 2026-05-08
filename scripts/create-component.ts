@@ -62,6 +62,7 @@ defineProps(${names.pascal}Props);
       content: `import type { PropType } from 'vue';
 
 export const ${names.pascal}Props = {
+  /** 按钮变体 */
   variant: {
     type: String as PropType<'default' | 'primary'>,
     default: 'default'
