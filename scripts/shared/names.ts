@@ -24,10 +24,16 @@ export function getComponentNames(input: string | undefined): ComponentNames {
     throw new Error('Component name is required. Example: pnpm create-component Button');
   }
 
+  if (!/^[A-Za-z][A-Za-z0-9\s_-]*$/.test(input)) {
+    throw new Error(
+      `Invalid component name: ${input}. Use letters, numbers, spaces, underscores, or hyphens.`
+    );
+  }
+
   const pascal = toPascalCase(input);
   const kebab = toKebabCase(input);
 
-  if (!pascal || !kebab) {
+  if (!pascal || !kebab || !/^[a-z][a-z0-9-]*$/.test(kebab)) {
     throw new Error(`Invalid component name: ${input}`);
   }
 
