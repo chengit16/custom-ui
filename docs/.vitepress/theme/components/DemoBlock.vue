@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, useId } from 'vue';
 import { normalizeDemoSource } from '../demo-source';
 
 const props = defineProps<{
@@ -9,7 +9,7 @@ const props = defineProps<{
 const expanded = ref(false);
 const copied = ref(false);
 const copyFailed = ref(false);
-const sourceId = `demo-source-${Math.random().toString(36).slice(2)}`;
+const sourceId = useId();
 
 const demoSource = computed(() => normalizeDemoSource(props.source));
 const copyLabel = computed(() => {
@@ -28,7 +28,13 @@ async function copySource() {
   copyFailed.value = false;
 
   try {
-    await globalThis.navigator?.clipboard?.writeText(demoSource.value.code);
+    const writeText = globalThis.navigator?.clipboard?.writeText;
+
+    if (!writeText) {
+      throw new Error('Clipboard API is unavailable.');
+    }
+
+    await writeText.call(globalThis.navigator.clipboard, demoSource.value.code);
     copied.value = true;
   } catch {
     copyFailed.value = true;
