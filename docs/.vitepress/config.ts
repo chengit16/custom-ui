@@ -18,7 +18,8 @@ export default defineConfig({
         { text: '主题配置', link: '/guide/theme' }
       ],
       '/components/': [
-        { text: '组件总览', link: '/components/' }
+        { text: '组件总览', link: '/components/' },
+        { text: 'Button 按钮', link: '/components/button' }
       ],
       '/automation/': [
         { text: '组件流程', link: '/automation/component-workflow' },
@@ -35,6 +36,9 @@ export default defineConfig({
       alias: {
         '@custom-ui/vue': fileURLToPath(new URL('../../packages/vue/src/index.ts', import.meta.url))
       }
+    },
+    ssr: {
+      noExternal: ['naive-ui']
     }
   }
 });
