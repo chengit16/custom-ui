@@ -8,14 +8,35 @@ const props = defineProps<{
 
 const expanded = ref(false);
 const copied = ref(false);
+const copyFailed = ref(false);
+const sourceId = `demo-source-${Math.random().toString(36).slice(2)}`;
 
 const demoSource = computed(() => normalizeDemoSource(props.source));
+const copyLabel = computed(() => {
+  if (copied.value) {
+    return '已复制';
+  }
+
+  if (copyFailed.value) {
+    return '复制失败';
+  }
+
+  return '复制代码';
+});
 
 async function copySource() {
-  await navigator.clipboard.writeText(demoSource.value.code);
-  copied.value = true;
-  window.setTimeout(() => {
+  copyFailed.value = false;
+
+  try {
+    await globalThis.navigator?.clipboard?.writeText(demoSource.value.code);
+    copied.value = true;
+  } catch {
+    copyFailed.value = true;
+  }
+
+  globalThis.setTimeout(() => {
     copied.value = false;
+    copyFailed.value = false;
   }, 1200);
 }
 </script>
@@ -26,13 +47,32 @@ async function copySource() {
       <slot />
     </div>
     <div class="custom-demo__toolbar">
-      <button type="button" @click="copySource">
-        {{ copied ? '已复制' : '复制代码' }}
+      <button
+        type="button"
+        @click="copySource"
+      >
+        {{ copyLabel }}
       </button>
-      <button type="button" @click="expanded = !expanded">
+      <button
+        type="button"
+        :aria-controls="sourceId"
+        :aria-expanded="expanded"
+        @click="expanded = !expanded"
+      >
         {{ expanded ? '收起代码' : '展开代码' }}
       </button>
     </div>
-    <pre v-if="expanded" class="custom-demo__source"><code>{{ demoSource.code }}</code></pre>
+    <p
+      class="custom-demo__status"
+      aria-live="polite"
+    >
+      {{ copyLabel }}
+    </p>
+    <pre
+      v-if="expanded"
+      :id="sourceId"
+      class="custom-demo__source"
+      aria-label="示例源码"
+    ><code>{{ demoSource.code }}</code></pre>
   </section>
 </template>
