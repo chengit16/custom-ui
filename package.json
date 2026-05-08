@@ -14,7 +14,7 @@
     "example:dev": "pnpm --filter @custom-ui/example-vite dev",
     "lint": "eslint .",
     "typecheck": "pnpm --filter @custom-ui/vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
-    "test": "vitest run",
+    "test": "vitest run --config packages/vue/vite.config.ts",
     "create-component": "tsx scripts/create-component.ts",
     "check-component": "tsx scripts/check-component.ts",
     "generate-api": "tsx scripts/generate-api.ts",

@@ -1,0 +1,29 @@
+{
+  "name": "@custom-ui/vue",
+  "version": "0.0.0",
+  "description": "Custom UI Vue component library built on Naive UI.",
+  "type": "module",
+  "sideEffects": ["**/*.css", "**/*.vue"],
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/custom-ui-vue.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/custom-ui-vue.js",
+  "module": "./dist/custom-ui-vue.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "naive-ui": "^2.43.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "naive-ui": "^2.43.2"
+  }
+}
