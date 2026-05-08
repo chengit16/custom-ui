@@ -1,16 +1,29 @@
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
+const isWindows = process.platform === 'win32';
 
 function run(command: string, args: string[]) {
+  const executable = isWindows && command === 'pnpm' ? 'pnpm.cmd' : command;
+
   console.log(`\n> ${command} ${args.join(' ')}`);
-  const result = spawnSync(command, args, {
+  const result = spawnSync(executable, args, {
     cwd: root,
     stdio: 'inherit',
     shell: false
   });
+
+  if (result.error) {
+    console.error(`Failed to run "${command} ${args.join(' ')}": ${result.error.message}`);
+    process.exit(1);
+  }
+
+  if (result.signal) {
+    console.error(`Command was terminated by signal ${result.signal}: ${command} ${args.join(' ')}`);
+    process.exit(1);
+  }
 
   if (result.status !== 0) {
     process.exit(result.status ?? 1);
@@ -48,14 +61,12 @@ function assertNoSmokeTestReleaseArtifacts() {
   if (existsSync(publicComponentIndex)) {
     const source = readFileSync(publicComponentIndex, 'utf8');
 
-    if (/export\s+\*\s+from\s+['"]\.\/smoke-test['"]\s*;?/.test(source)) {
-      blockers.push(`${publicComponentIndex} still exports ./smoke-test`);
+    if (/export\s+(?:\*|\{[^}]*SmokeTest[^}]*\})\s+from\s+['"]\.\/smoke-test(?:\/index)?['"]\s*;?/.test(source)) {
+      blockers.push(`${publicComponentIndex} still publicly exports SmokeTest`);
     }
   }
 
-  const distSmokeTestFiles = findSmokeTestDistFiles(distDir).filter(path => {
-    return statSync(path).isFile() || statSync(path).isDirectory();
-  });
+  const distSmokeTestFiles = findSmokeTestDistFiles(distDir);
 
   if (distSmokeTestFiles.length > 0) {
     blockers.push(
