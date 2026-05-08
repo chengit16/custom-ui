@@ -65,7 +65,7 @@
 - Create: `.changeset/config.json`
 - Modify: `.gitignore`
 
-- [ ] **Step 1: Create root `package.json`**
+- [x] **Step 1: Create root `package.json`**
 
 Create `package.json` with:
 
@@ -110,7 +110,7 @@ Create `package.json` with:
 }
 ```
 
-- [ ] **Step 2: Create `pnpm-workspace.yaml`**
+- [x] **Step 2: Create `pnpm-workspace.yaml`**
 
 ```yaml
 packages:
@@ -119,7 +119,7 @@ packages:
   - examples/*
 ```
 
-- [ ] **Step 3: Create `tsconfig.base.json`**
+- [x] **Step 3: Create `tsconfig.base.json`**
 
 ```json
 {
@@ -140,7 +140,7 @@ packages:
 }
 ```
 
-- [ ] **Step 4: Create `eslint.config.mjs`**
+- [x] **Step 4: Create `eslint.config.mjs`**
 
 ```js
 import js from '@eslint/js';
@@ -167,7 +167,7 @@ export default [
 ];
 ```
 
-- [ ] **Step 5: Create `.changeset/config.json`**
+- [x] **Step 5: Create `.changeset/config.json`**
 
 ```json
 {
@@ -183,7 +183,7 @@ export default [
 }
 ```
 
-- [ ] **Step 6: Update `.gitignore`**
+- [x] **Step 6: Update `.gitignore`**
 
 Ensure `.gitignore` contains:
 
@@ -198,7 +198,7 @@ coverage/
 *.tsbuildinfo
 ```
 
-- [ ] **Step 7: Install dependencies**
+- [x] **Step 7: Install dependencies**
 
 Run:
 
@@ -208,7 +208,7 @@ pnpm install
 
 Expected: lockfile is created and all workspace dependencies install successfully.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add package.json pnpm-workspace.yaml tsconfig.base.json eslint.config.mjs .changeset/config.json .gitignore pnpm-lock.yaml
@@ -229,7 +229,7 @@ git commit -m "chore: scaffold workspace tooling"
 - Create: `packages/vue/src/vite-env.d.ts`
 - Create: `packages/vue/src/__tests__/exports.test.ts`
 
-- [ ] **Step 1: Create `packages/vue/package.json`**
+- [x] **Step 1: Create `packages/vue/package.json`**
 
 ```json
 {
@@ -263,7 +263,7 @@ git commit -m "chore: scaffold workspace tooling"
 }
 ```
 
-- [ ] **Step 2: Create `packages/vue/tsconfig.json`**
+- [x] **Step 2: Create `packages/vue/tsconfig.json`**
 
 ```json
 {
@@ -283,7 +283,7 @@ git commit -m "chore: scaffold workspace tooling"
 }
 ```
 
-- [ ] **Step 3: Create `packages/vue/vite.config.ts`**
+- [x] **Step 3: Create `packages/vue/vite.config.ts`**
 
 ```ts
 import vue from '@vitejs/plugin-vue';
@@ -314,7 +314,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: Create library source files**
+- [x] **Step 4: Create library source files**
 
 Create `packages/vue/src/index.ts`:
 
@@ -371,7 +371,7 @@ declare module '*.vue' {
 }
 ```
 
-- [ ] **Step 5: Create `packages/vue/src/provider/custom-provider.vue`**
+- [x] **Step 5: Create `packages/vue/src/provider/custom-provider.vue`**
 
 ```vue
 <script setup lang="ts">
@@ -393,7 +393,7 @@ defineProps<{
 </template>
 ```
 
-- [ ] **Step 6: Create export smoke test**
+- [x] **Step 6: Create export smoke test**
 
 Create `packages/vue/src/__tests__/exports.test.ts`:
 
@@ -410,7 +410,7 @@ describe('@custom-ui/vue exports', () => {
 });
 ```
 
-- [ ] **Step 7: Verify package**
+- [x] **Step 7: Verify package**
 
 Run:
 
@@ -422,7 +422,7 @@ pnpm --filter @custom-ui/vue build
 
 Expected: typecheck passes, test passes, `packages/vue/dist` is created.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add packages/vue package.json pnpm-lock.yaml
@@ -444,7 +444,7 @@ git commit -m "feat: add vue library package"
 - Create: `docs/automation/release.md`
 - Create: `docs/components/index.md`
 
-- [ ] **Step 1: Create `docs/package.json`**
+- [x] **Step 1: Create `docs/package.json`**
 
 ```json
 {
@@ -466,7 +466,7 @@ git commit -m "feat: add vue library package"
 }
 ```
 
-- [ ] **Step 2: Create `docs/tsconfig.json`**
+- [x] **Step 2: Create `docs/tsconfig.json`**
 
 ```json
 {
@@ -481,7 +481,7 @@ git commit -m "feat: add vue library package"
 }
 ```
 
-- [ ] **Step 3: Create VitePress config**
+- [x] **Step 3: Create VitePress config**
 
 Create `docs/.vitepress/config.ts`:
 
@@ -525,7 +525,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: Create theme entry and styles**
+- [x] **Step 4: Create theme entry and styles**
 
 Create `docs/.vitepress/theme/index.ts`:
 
@@ -577,7 +577,7 @@ Create `docs/.vitepress/theme/styles.css`:
 }
 ```
 
-- [ ] **Step 5: Create docs pages**
+- [x] **Step 5: Create docs pages**
 
 Create `docs/index.md`:
 
@@ -680,7 +680,7 @@ Create `docs/components/index.md`:
 组件页会由 `scripts/create-component.ts` 创建。每个组件页应包含真实 demo、源码展示和 API 表格。
 ```
 
-- [ ] **Step 6: Verify docs**
+- [x] **Step 6: Verify docs**
 
 Run:
 
@@ -691,7 +691,7 @@ pnpm docs:build
 
 Expected: typecheck passes and VitePress build completes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add docs package.json pnpm-lock.yaml
@@ -705,7 +705,7 @@ git commit -m "feat: add vitepress documentation site"
 - Modify: `docs/.vitepress/theme/index.ts`
 - Create: `docs/.vitepress/theme/demo-source.ts`
 
-- [ ] **Step 1: Create source helper**
+- [x] **Step 1: Create source helper**
 
 Create `docs/.vitepress/theme/demo-source.ts`:
 
@@ -721,7 +721,7 @@ export function normalizeDemoSource(source: string): DemoSource {
 }
 ```
 
-- [ ] **Step 2: Create `DemoBlock.vue`**
+- [x] **Step 2: Create `DemoBlock.vue`**
 
 ```vue
 <script setup lang="ts">
@@ -764,7 +764,7 @@ async function copySource() {
 </template>
 ```
 
-- [ ] **Step 3: Register `DemoBlock` globally**
+- [x] **Step 3: Register `DemoBlock` globally**
 
 Modify `docs/.vitepress/theme/index.ts` to:
 
@@ -785,7 +785,7 @@ const theme: Theme = {
 export default theme;
 ```
 
-- [ ] **Step 4: Verify DemoBlock typecheck**
+- [x] **Step 4: Verify DemoBlock typecheck**
 
 Run:
 
@@ -796,7 +796,7 @@ pnpm docs:build
 
 Expected: docs build succeeds with `DemoBlock` registered.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add docs/.vitepress/theme
@@ -813,7 +813,7 @@ git commit -m "feat: add vitepress demo block"
 - Create: `examples/vite/src/main.ts`
 - Create: `examples/vite/src/App.vue`
 
-- [ ] **Step 1: Create example package**
+- [x] **Step 1: Create example package**
 
 Create `examples/vite/package.json`:
 
@@ -840,7 +840,7 @@ Create `examples/vite/package.json`:
 }
 ```
 
-- [ ] **Step 2: Create app files**
+- [x] **Step 2: Create app files**
 
 Create `examples/vite/index.html`:
 
@@ -896,7 +896,7 @@ const themeOverrides = createCustomTheme({
 </style>
 ```
 
-- [ ] **Step 3: Create config files**
+- [x] **Step 3: Create config files**
 
 Create `examples/vite/tsconfig.json`:
 
@@ -929,7 +929,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 4: Verify example app**
+- [x] **Step 4: Verify example app**
 
 Run:
 
@@ -940,7 +940,7 @@ pnpm --filter @custom-ui/example-vite build
 
 Expected: example typecheck and build both pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add examples/vite package.json pnpm-lock.yaml
@@ -955,7 +955,7 @@ git commit -m "feat: add vite example app"
 - Create: `scripts/check-component.ts`
 - Create: `scripts/generate-api.ts`
 
-- [ ] **Step 1: Create name helper**
+- [x] **Step 1: Create name helper**
 
 Create `scripts/shared/names.ts`:
 
@@ -1001,7 +1001,7 @@ export function getComponentNames(input: string | undefined): ComponentNames {
 }
 ```
 
-- [ ] **Step 2: Create `scripts/create-component.ts`**
+- [x] **Step 2: Create `scripts/create-component.ts`**
 
 ```ts
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -1129,7 +1129,7 @@ if (!currentIndex.includes(exportLine)) {
 console.log(`Created component scaffold for ${names.pascal}.`);
 ```
 
-- [ ] **Step 3: Add API type used by generated files**
+- [x] **Step 3: Add API type used by generated files**
 
 Create `packages/vue/src/scripts-api.ts`:
 
@@ -1144,7 +1144,7 @@ export interface ApiProperty {
 
 The scaffold generator from Step 2 already imports this type from `../../scripts-api`, which is the correct relative path from a component directory such as `packages/vue/src/components/button/api.ts`.
 
-- [ ] **Step 4: Create `scripts/check-component.ts`**
+- [x] **Step 4: Create `scripts/check-component.ts`**
 
 ```ts
 import { existsSync } from 'node:fs';
@@ -1178,7 +1178,7 @@ if (missing.length > 0) {
 console.log(`Component ${names.pascal} has all required workflow files.`);
 ```
 
-- [ ] **Step 5: Create `scripts/generate-api.ts`**
+- [x] **Step 5: Create `scripts/generate-api.ts`**
 
 ```ts
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
@@ -1220,7 +1220,7 @@ writeFileSync(apiOutput, `${table}\n`);
 console.log(`Generated API docs: ${apiOutput}`);
 ```
 
-- [ ] **Step 6: Verify scripts with a scaffold component**
+- [x] **Step 6: Verify scripts with a scaffold component**
 
 Run:
 
@@ -1233,7 +1233,7 @@ pnpm test packages/vue/src/components/smoke-test/__tests__/smoke-test.test.ts
 
 Expected: scaffold is created, checker passes, API Markdown is generated, and smoke test passes.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add scripts packages/vue/src/scripts-api.ts packages/vue/src/components docs/components package.json pnpm-lock.yaml
@@ -1246,7 +1246,7 @@ git commit -m "feat: add component automation scripts"
 - Create: `scripts/release-check.ts`
 - Modify: `package.json`
 
-- [ ] **Step 1: Create `scripts/release-check.ts`**
+- [x] **Step 1: Create `scripts/release-check.ts`**
 
 ```ts
 import { spawnSync } from 'node:child_process';
@@ -1278,7 +1278,7 @@ run('pnpm', ['--filter', '@custom-ui/vue', 'exec', 'npm', 'pack', '--dry-run']);
 console.log('\nRelease dry-run completed without publishing.');
 ```
 
-- [ ] **Step 2: Verify release check**
+- [x] **Step 2: Verify release check**
 
 Run:
 
@@ -1288,7 +1288,7 @@ pnpm release:check
 
 Expected: lint, typecheck, tests, package build, docs build, and `npm pack --dry-run` all pass. No publish command runs.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add scripts/release-check.ts package.json pnpm-lock.yaml
@@ -1304,7 +1304,7 @@ git commit -m "feat: add release dry-run check"
 - Create: `.agents/skills/code-reviewer/SKILL.md`
 - Create: `.agents/skills/release-checker/SKILL.md`
 
-- [ ] **Step 1: Create `development-spec`**
+- [x] **Step 1: Create `development-spec`**
 
 Create `.agents/skills/development-spec/SKILL.md`:
 
@@ -1344,7 +1344,7 @@ Use this skill whenever creating, reviewing, or documenting `@custom-ui/vue` com
 - Run `pnpm release:check` before any release decision.
 ```
 
-- [ ] **Step 2: Create `create-component`**
+- [x] **Step 2: Create `create-component`**
 
 Create `.agents/skills/create-component/SKILL.md`:
 
@@ -1374,7 +1374,7 @@ Use this skill when the user asks to add or update a component in `@custom-ui/vu
 Do not skip docs, demo, API metadata, or component checks.
 ```
 
-- [ ] **Step 3: Create `docs-writer`**
+- [x] **Step 3: Create `docs-writer`**
 
 Create `.agents/skills/docs-writer/SKILL.md`:
 
@@ -1398,7 +1398,7 @@ Use this skill when creating or updating component documentation.
 - Keep examples short and focused on real usage.
 ```
 
-- [ ] **Step 4: Create `code-reviewer`**
+- [x] **Step 4: Create `code-reviewer`**
 
 Create `.agents/skills/code-reviewer/SKILL.md`:
 
@@ -1426,7 +1426,7 @@ Use this skill for component review.
 Report blockers first. If there are no blockers, say the component passes review and list residual risks.
 ```
 
-- [ ] **Step 5: Create `release-checker`**
+- [x] **Step 5: Create `release-checker`**
 
 Create `.agents/skills/release-checker/SKILL.md`:
 
@@ -1449,7 +1449,7 @@ Use this skill before any release decision.
 5. Summarize blockers before any real release.
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add .agents/skills
@@ -1461,7 +1461,7 @@ git commit -m "docs: add custom ui ai skills"
 **Files:**
 - Modify only files needed to fix verification failures.
 
-- [ ] **Step 1: Run full verification**
+- [x] **Step 1: Run full verification**
 
 Run:
 
@@ -1477,7 +1477,9 @@ pnpm release:check
 
 Expected: all commands pass.
 
-- [ ] **Step 2: Inspect git status**
+Current result: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm docs:build`, and `pnpm --filter @custom-ui/example-vite build` pass. `pnpm release:check` runs those same checks successfully, then stops at the intentional `SmokeTest` release blocker because the proof scaffold is still publicly exported. This is the expected Phase 1 protection until the first real component replaces the scaffold release path.
+
+- [x] **Step 2: Inspect git status**
 
 Run:
 
@@ -1487,7 +1489,7 @@ git status --short
 
 Expected: no uncommitted files except intentional generated artifacts that should be committed or ignored.
 
-- [ ] **Step 3: Commit fixes if needed**
+- [x] **Step 3: Commit fixes if needed**
 
 If Step 1 required fixes, commit them:
 
@@ -1496,7 +1498,7 @@ git add .
 git commit -m "chore: complete phase 1 verification"
 ```
 
-- [ ] **Step 4: Record completion summary**
+- [x] **Step 4: Record completion summary**
 
 Create or update `docs/automation/phase-1-summary.md` with:
 
@@ -1520,7 +1522,7 @@ Phase 1 established the Custom UI Vue workspace, documentation site, example app
 Use `pnpm create-component Button` to add the first real component through the automated workflow.
 ```
 
-- [ ] **Step 5: Commit summary**
+- [x] **Step 5: Commit summary**
 
 ```bash
 git add docs/automation/phase-1-summary.md
