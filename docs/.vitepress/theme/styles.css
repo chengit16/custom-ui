@@ -1,0 +1,33 @@
+:root {
+  --custom-demo-border: var(--vp-c-divider);
+  --custom-demo-bg: var(--vp-c-bg-soft);
+}
+
+.custom-demo {
+  border: 1px solid var(--custom-demo-border);
+  border-radius: 8px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.custom-demo__preview {
+  padding: 24px;
+  background: var(--vp-c-bg);
+}
+
+.custom-demo__toolbar {
+  align-items: center;
+  border-top: 1px solid var(--custom-demo-border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 8px 12px;
+}
+
+.custom-demo__source {
+  background: var(--custom-demo-bg);
+  border-top: 1px solid var(--custom-demo-border);
+  margin: 0;
+  overflow: auto;
+  padding: 16px;
+}

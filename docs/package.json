@@ -1,0 +1,17 @@
+{
+  "name": "@custom-ui/docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev . --host 0.0.0.0",
+    "build": "vitepress build .",
+    "preview": "vitepress preview .",
+    "typecheck": "vue-tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@custom-ui/vue": "workspace:*",
+    "naive-ui": "^2.43.2",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.25"
+  }
+}

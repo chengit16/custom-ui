@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@custom-ui/vue": ["../packages/vue/src/index.ts"]
+    }
+  },
+  "include": [".vitepress/**/*.ts", ".vitepress/**/*.vue", "**/*.md"]
+}
