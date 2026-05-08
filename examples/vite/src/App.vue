@@ -11,7 +11,9 @@ const themeOverrides = createCustomTheme({
   <CustomProvider :theme-overrides="themeOverrides">
     <main class="example-page">
       <h1>Custom UI Example</h1>
-      <NButton type="primary">Naive UI through CustomProvider</NButton>
+      <NButton type="primary">
+        Naive UI through CustomProvider
+      </NButton>
     </main>
   </CustomProvider>
 </template>
