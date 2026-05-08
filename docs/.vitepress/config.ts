@@ -22,7 +22,8 @@ export default defineConfig({
       ],
       '/automation/': [
         { text: '组件流程', link: '/automation/component-workflow' },
-        { text: '发布检查', link: '/automation/release' }
+        { text: '发布检查', link: '/automation/release' },
+        { text: 'Phase 1 总结', link: '/automation/phase-1-summary' }
       ]
     },
     search: {
