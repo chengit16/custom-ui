@@ -1,18 +1,11 @@
 /// <reference types="node" />
 
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 import { runCli } from './shared/cli';
+import { readApiProperties } from './shared/api-docs';
 import { getComponentNames } from './shared/names';
-
-interface ApiProperty {
-  name: string;
-  type: string;
-  default?: string;
-  description: string;
-}
 
 const root = resolve(import.meta.dirname, '..');
 
@@ -22,18 +15,13 @@ function escapeTableCell(value: string): string {
 
 await runCli(async () => {
   const names = getComponentNames(process.argv[2]);
-  const apiSource = resolve(root, 'packages/vue/src/components', names.kebab, 'api.ts');
+  const componentDir = resolve(root, 'packages/vue/src/components', names.kebab);
   const apiOutput = resolve(root, 'docs/components/generated', `${names.kebab}-api.md`);
 
-  if (!existsSync(apiSource)) {
-    throw new Error(`API metadata file does not exist: ${apiSource}`);
-  }
+  const api = await readApiProperties(componentDir);
 
-  const module = await import(pathToFileURL(apiSource).href);
-  const api = module.api as ApiProperty[];
-
-  if (!Array.isArray(api)) {
-    throw new Error(`API metadata must export an "api" array: ${apiSource}`);
+  if (api.length === 0) {
+    throw new Error(`No API metadata found for ${componentDir}. Add props.ts JSDoc annotations or api.ts entries.`);
   }
 
   const table = [
@@ -43,7 +31,7 @@ await runCli(async () => {
       item =>
         `| ${escapeTableCell(item.name)} | \`${escapeTableCell(item.type)}\` | ${
           item.default === undefined ? '-' : escapeTableCell(item.default)
-        } | ${escapeTableCell(item.description)} |`
+        } | ${item.description ? escapeTableCell(item.description) : '-'} |`
     )
   ].join('\n');
 

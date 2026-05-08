@@ -4,67 +4,56 @@ export const api: ApiProperty[] = [
   {
     name: 'type',
     type: "'default' | 'primary' | 'success' | 'info' | 'warning' | 'error'",
-    default: "'default'",
-    description: '按钮类型，对应 Naive UI Button 的 type。'
+    default: "'default'"
   },
   {
     name: 'size',
     type: "'tiny' | 'small' | 'medium' | 'large'",
-    default: "'medium'",
-    description: '按钮尺寸。'
+    default: "'medium'"
   },
   {
     name: 'disabled',
     type: 'boolean',
-    default: 'false',
-    description: '是否禁用按钮。'
+    default: 'false'
   },
   {
     name: 'loading',
     type: 'boolean',
-    default: 'false',
-    description: '是否展示加载状态。'
+    default: 'false'
   },
   {
     name: 'block',
     type: 'boolean',
-    default: 'false',
-    description: '是否让按钮宽度撑满父容器。'
+    default: 'false'
   },
   {
     name: 'secondary',
     type: 'boolean',
-    default: 'false',
-    description: '是否使用次要按钮样式。'
+    default: 'false'
   },
   {
     name: 'text',
     type: 'boolean',
-    default: 'false',
-    description: '是否使用文本按钮样式。'
+    default: 'false'
   },
   {
     name: 'round',
     type: 'boolean',
-    default: 'false',
-    description: '是否使用圆角按钮。'
+    default: 'false'
   },
   {
     name: 'circle',
     type: 'boolean',
-    default: 'false',
-    description: '是否使用圆形按钮。'
+    default: 'false'
   },
   {
     name: 'ghost',
     type: 'boolean',
-    default: 'false',
-    description: '是否使用幽灵按钮样式。'
+    default: 'false'
   },
   {
     name: 'dashed',
     type: 'boolean',
-    default: 'false',
-    description: '是否使用虚线按钮样式。'
+    default: 'false'
   }
 ];

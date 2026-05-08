@@ -56,7 +56,7 @@ export const ButtonProps = {
 - 组件文档位于 `docs/components/{kebab-name}.md`。
 - 以真实 demo 文件作为唯一事实来源。
 - 使用 `DemoBlock` 展示 demo 预览和源码。
-- 使用 `pnpm generate-api {ComponentName}` 生成 API 表格。
+- 使用 `pnpm generate-api {ComponentName}` 生成 API 表格，优先读取 `props.ts` 里的中文 JSDoc 注释，`api.ts` 只用于补充或覆盖。
 - 文档页需要能直接渲染真实 demo，并能展示同一份源码。
 - 文档中如果引用 API 表格，优先引用 `docs/components/generated/{kebab-name}-api.md`。
 
