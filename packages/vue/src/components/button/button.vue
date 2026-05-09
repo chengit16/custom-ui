@@ -4,7 +4,7 @@ import { NButton } from 'naive-ui';
 import { ButtonProps } from './props';
 
 defineOptions({
-  name: 'CustomButton'
+  name: 'CustomButton',
 });
 
 defineProps(ButtonProps);
@@ -13,17 +13,28 @@ defineProps(ButtonProps);
 <template>
   <NButton
     :type="type"
+    :secondary="secondary"
+    :tertiary="tertiary"
+    :quaternary="quaternary"
+    :strong="strong"
     :size="size"
     :disabled="disabled"
     :loading="loading"
     :block="block"
-    :secondary="secondary"
     :text="text"
     :round="round"
     :circle="circle"
     :ghost="ghost"
     :dashed="dashed"
+    :color="color"
+    :icon-placement="iconPlacement"
   >
+    <template
+      v-if="$slots.icon"
+      #icon
+    >
+      <slot name="icon" />
+    </template>
     <slot />
   </NButton>
 </template>

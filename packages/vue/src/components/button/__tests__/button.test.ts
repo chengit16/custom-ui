@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { createApp, nextTick } from 'vue';
 
-import { CustomButton } from '../index';
+import { CustomButton, CustomButtonGroup } from '../index';
 
 describe('CustomButton', () => {
   it('exports the component', () => {
@@ -23,14 +23,14 @@ describe('CustomButton', () => {
       data() {
         return {
           clicks,
-          loading: false
+          loading: false,
         };
       },
       watch: {
         clicks(value: number) {
           clicks = value;
-        }
-      }
+        },
+      },
     });
 
     app.mount(host);
@@ -51,7 +51,7 @@ describe('CustomButton', () => {
     const host = document.createElement('div');
     const app = createApp({
       components: { CustomButton },
-      template: '<CustomButton disabled>不可用</CustomButton>'
+      template: '<CustomButton disabled>不可用</CustomButton>',
     });
 
     app.mount(host);
@@ -59,6 +59,51 @@ describe('CustomButton', () => {
 
     const button = host.querySelector('button');
     expect(button?.hasAttribute('disabled')).toBe(true);
+
+    app.unmount();
+  });
+
+  it('renders a button group container', async () => {
+    const host = document.createElement('div');
+    const app = createApp({
+      components: { CustomButton, CustomButtonGroup },
+      template: `
+        <CustomButtonGroup :gap="12" block>
+          <CustomButton type="primary">确定</CustomButton>
+          <CustomButton secondary>取消</CustomButton>
+        </CustomButtonGroup>
+      `,
+    });
+
+    app.mount(host);
+    await nextTick();
+
+    const group = host.querySelector('.custom-button-group');
+    const buttons = host.querySelectorAll('button');
+    expect(group).not.toBeNull();
+    expect(buttons.length).toBe(2);
+
+    app.unmount();
+  });
+
+  it('forwards icon slot to the underlying button', async () => {
+    const host = document.createElement('div');
+    const app = createApp({
+      components: { CustomButton },
+      template: `
+        <CustomButton type="primary">
+          <template #icon>
+            <span class="icon-slot">+</span>
+          </template>
+          新建
+        </CustomButton>
+      `,
+    });
+
+    app.mount(host);
+    await nextTick();
+
+    expect(host.querySelector('.icon-slot')).not.toBeNull();
 
     app.unmount();
   });

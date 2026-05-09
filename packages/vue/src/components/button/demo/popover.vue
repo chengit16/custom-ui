@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import { NPopover } from 'naive-ui';
+
 import { CustomButton } from '../index';
 </script>
 
 <template>
   <div class="button-demo">
-    <CustomButton type="primary">
-      主要按钮
-    </CustomButton>
-    <CustomButton secondary>
-      次要按钮
-    </CustomButton>
-    <CustomButton> 默认按钮 </CustomButton>
+    <NPopover trigger="hover">
+      <template #trigger>
+        <CustomButton type="primary">
+          悬浮查看
+        </CustomButton>
+      </template>
+      这是一个 Popover 提示
+    </NPopover>
   </div>
 </template>
 

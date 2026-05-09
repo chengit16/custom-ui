@@ -12,6 +12,7 @@
     "docs:dev": "pnpm --filter @custom-ui/docs dev",
     "docs:build": "pnpm --filter @custom-ui/docs build",
     "example:dev": "pnpm --filter @custom-ui/example-vite dev",
+    "prepack": "npx husky",
     "lint": "eslint .",
     "typecheck": "pnpm --filter @custom-ui/vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
     "test": "vitest run",
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
     "@eslint/js": "^9.39.1",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
@@ -29,6 +32,9 @@
     "eslint": "^9.39.1",
     "eslint-plugin-vue": "^10.9.1",
     "happy-dom": "^20.9.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4",
@@ -37,5 +43,19 @@
     "vue": "^3.5.25",
     "vue-eslint-parser": "^10.4.0",
     "vue-tsc": "^3.1.5"
+  },
+  "lint-staged": {
+    "*.{md,mdx,json}": "prettier --write",
+    "*.{ts,mts,tsx,vue}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "printWidth": 84,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "all"
   }
 }

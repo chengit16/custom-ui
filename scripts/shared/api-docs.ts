@@ -10,6 +10,11 @@ export interface ApiProperty {
   description?: string;
 }
 
+export interface ApiPropertyGroup {
+  name: string;
+  properties: ApiProperty[];
+}
+
 function unwrapExpression(expression: ts.Expression): ts.Expression {
   let current = expression;
 
@@ -20,32 +25,51 @@ function unwrapExpression(expression: ts.Expression): ts.Expression {
   return current;
 }
 
-function getObjectLiteralFromPropsSource(sourceFile: ts.SourceFile): ts.ObjectLiteralExpression | undefined {
+function getObjectLiteralsFromPropsSource(sourceFile: ts.SourceFile): Array<{
+  name: string;
+  objectLiteral: ts.ObjectLiteralExpression;
+}> {
+  const propsObjects: Array<{
+    name: string;
+    objectLiteral: ts.ObjectLiteralExpression;
+  }> = [];
+
   for (const statement of sourceFile.statements) {
     if (!ts.isVariableStatement(statement)) {
       continue;
     }
 
-    if (!statement.modifiers?.some(modifier => modifier.kind === ts.SyntaxKind.ExportKeyword)) {
+    if (
+      !statement.modifiers?.some(
+        modifier => modifier.kind === ts.SyntaxKind.ExportKeyword,
+      )
+    ) {
       continue;
     }
 
     for (const declaration of statement.declarationList.declarations) {
       const name = declaration.name;
 
-      if (!ts.isIdentifier(name) || !name.text.endsWith('Props') || !declaration.initializer) {
+      if (
+        !ts.isIdentifier(name) ||
+        !name.text.endsWith('Props') ||
+        !declaration.initializer
+      ) {
         continue;
       }
 
       const initializer = unwrapExpression(declaration.initializer);
 
       if (ts.isObjectLiteralExpression(initializer)) {
-        return initializer;
+        propsObjects.push({
+          name: name.text.replace(/Props$/, ''),
+          objectLiteral: initializer,
+        });
       }
     }
   }
 
-  return undefined;
+  return propsObjects;
 }
 
 function getCommentText(sourceText: string, node: ts.Node): string | undefined {
@@ -86,13 +110,18 @@ function stringifyTypeNode(
   typeNode: ts.TypeNode,
   aliases: Map<string, ts.TypeNode>,
   sourceFile: ts.SourceFile,
-  seen = new Set<string>()
+  seen = new Set<string>(),
 ): string {
   if (ts.isTypeReferenceNode(typeNode)) {
     const typeName = typeNode.typeName.getText(sourceFile);
 
     if (typeName === 'PropType' && typeNode.typeArguments?.[0]) {
-      return stringifyTypeNode(typeNode.typeArguments[0], aliases, sourceFile, seen);
+      return stringifyTypeNode(
+        typeNode.typeArguments[0],
+        aliases,
+        sourceFile,
+        seen,
+      );
     }
 
     const aliasTarget = aliases.get(typeName);
@@ -106,11 +135,15 @@ function stringifyTypeNode(
   }
 
   if (ts.isUnionTypeNode(typeNode)) {
-    return typeNode.types.map(member => stringifyTypeNode(member, aliases, sourceFile, seen)).join(' | ');
+    return typeNode.types
+      .map(member => stringifyTypeNode(member, aliases, sourceFile, seen))
+      .join(' | ');
   }
 
   if (ts.isIntersectionTypeNode(typeNode)) {
-    return typeNode.types.map(member => stringifyTypeNode(member, aliases, sourceFile, seen)).join(' & ');
+    return typeNode.types
+      .map(member => stringifyTypeNode(member, aliases, sourceFile, seen))
+      .join(' & ');
   }
 
   if (ts.isParenthesizedTypeNode(typeNode)) {
@@ -123,7 +156,7 @@ function stringifyTypeNode(
 function stringifyInitializerType(
   initializer: ts.Expression,
   aliases: Map<string, ts.TypeNode>,
-  sourceFile: ts.SourceFile
+  sourceFile: ts.SourceFile,
 ): string {
   if (ts.isTypeAssertionExpression(initializer) || ts.isAsExpression(initializer)) {
     const typeNode = initializer.type;
@@ -149,15 +182,12 @@ function stringifyInitializerType(
   return expression.getText(sourceFile);
 }
 
-function readPropsMetadataFromSource(sourceText: string): ApiProperty[] {
-  const sourceFile = ts.createSourceFile('props.ts', sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
-  const aliases = buildTypeAliasMap(sourceFile);
-  const propsObject = getObjectLiteralFromPropsSource(sourceFile);
-
-  if (!propsObject) {
-    return [];
-  }
-
+function readPropsObjectMetadata(
+  sourceText: string,
+  sourceFile: ts.SourceFile,
+  propsObject: ts.ObjectLiteralExpression,
+  aliases: Map<string, ts.TypeNode>,
+): ApiProperty[] {
   return propsObject.properties.flatMap(property => {
     if (!ts.isPropertyAssignment(property)) {
       return [];
@@ -187,24 +217,67 @@ function readPropsMetadataFromSource(sourceText: string): ApiProperty[] {
         type: typeMember
           ? stringifyInitializerType(typeMember.initializer, aliases, sourceFile)
           : 'unknown',
-        default: defaultMember ? defaultMember.initializer.getText(sourceFile) : undefined,
-        description: getCommentText(sourceText, property)
-      }
+        default: defaultMember
+          ? defaultMember.initializer.getText(sourceFile)
+          : undefined,
+        description: getCommentText(sourceText, property),
+      },
     ];
   });
 }
 
+function readPropsMetadataGroupsFromSource(sourceText: string): ApiPropertyGroup[] {
+  const sourceFile = ts.createSourceFile(
+    'props.ts',
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
+  const aliases = buildTypeAliasMap(sourceFile);
+  const propsObjects = getObjectLiteralsFromPropsSource(sourceFile);
+
+  if (propsObjects.length === 0) {
+    return [];
+  }
+
+  return propsObjects.map(propsObject => ({
+    name: propsObject.name,
+    properties: readPropsObjectMetadata(
+      sourceText,
+      sourceFile,
+      propsObject.objectLiteral,
+      aliases,
+    ),
+  }));
+}
+
 export function readApiProperties(componentDir: string): ApiProperty[] {
+  const groups = readApiPropertyGroups(componentDir);
+  return groups[0]?.properties ?? [];
+}
+
+export function readApiPropertyGroups(componentDir: string): ApiPropertyGroup[] {
   const propsSourcePath = resolve(componentDir, 'props.ts');
 
   try {
-    return readPropsMetadataFromSource(readFileSync(propsSourcePath, 'utf8'));
+    return readPropsMetadataGroupsFromSource(readFileSync(propsSourcePath, 'utf8'));
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Failed to read props metadata from ${propsSourcePath}: ${message}`);
+    throw new Error(
+      `Failed to read props metadata from ${propsSourcePath}: ${message}`,
+    );
   }
 }
 
-export function readApiPropertiesFromPropsSource(sourceText: string): ApiProperty[] {
-  return readPropsMetadataFromSource(sourceText);
+export function readApiPropertiesFromPropsSource(
+  sourceText: string,
+): ApiProperty[] {
+  return readPropsMetadataGroupsFromSource(sourceText)[0]?.properties ?? [];
+}
+
+export function readApiPropertyGroupsFromPropsSource(
+  sourceText: string,
+): ApiPropertyGroup[] {
+  return readPropsMetadataGroupsFromSource(sourceText);
 }

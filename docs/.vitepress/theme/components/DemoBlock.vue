@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue';
+import { codeToHtml } from 'shiki';
+import { computed, onServerPrefetch, ref, useId, watch } from 'vue';
 import { normalizeDemoSource } from '../demo-source';
 
 const props = defineProps<{
@@ -9,6 +10,7 @@ const props = defineProps<{
 const expanded = ref(false);
 const copied = ref(false);
 const copyFailed = ref(false);
+const highlightedSource = ref('');
 const sourceId = useId();
 
 const demoSource = computed(() => normalizeDemoSource(props.source));
@@ -23,6 +25,26 @@ const copyLabel = computed(() => {
 
   return '复制代码';
 });
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+async function highlightSource() {
+  try {
+    highlightedSource.value = await codeToHtml(demoSource.value.code, {
+      lang: 'vue',
+      theme: 'github-light',
+    });
+  } catch {
+    highlightedSource.value = `<pre><code>${escapeHtml(demoSource.value.code)}</code></pre>`;
+  }
+}
 
 async function copySource() {
   copyFailed.value = false;
@@ -45,6 +67,16 @@ async function copySource() {
     copyFailed.value = false;
   }, 1200);
 }
+
+watch(
+  () => demoSource.value.code,
+  () => {
+    void highlightSource();
+  },
+  { immediate: true },
+);
+
+onServerPrefetch(highlightSource);
 </script>
 
 <template>
@@ -57,6 +89,29 @@ async function copySource() {
         type="button"
         @click="copySource"
       >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 16 16"
+          fill="none"
+          class="custom-demo__icon"
+        >
+          <path
+            d="M5.5 5.5H4a1 1 0 0 0-1 1v5.5a1 1 0 0 0 1 1h5.5a1 1 0 0 0 1-1V11"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <rect
+            x="6.5"
+            y="2.5"
+            width="6.5"
+            height="6.5"
+            rx="1"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
         {{ copyLabel }}
       </button>
       <button
@@ -65,6 +120,18 @@ async function copySource() {
         :aria-expanded="expanded"
         @click="expanded = !expanded"
       >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 16 16"
+          fill="none"
+          class="custom-demo__icon"
+        >
+          <path
+            d="M3 5.5h10M3 8h10M3 10.5h10"
+            stroke="currentColor"
+            stroke-linecap="round"
+          />
+        </svg>
         {{ expanded ? '收起代码' : '展开代码' }}
       </button>
     </div>
@@ -74,11 +141,12 @@ async function copySource() {
     >
       {{ copyLabel }}
     </p>
-    <pre
+    <div
       v-if="expanded"
       :id="sourceId"
       class="custom-demo__source"
       aria-label="示例源码"
-    ><code>{{ demoSource.code }}</code></pre>
+      :innerHTML="highlightedSource"
+    />
   </section>
 </template>

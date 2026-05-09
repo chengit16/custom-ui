@@ -4,13 +4,24 @@ import { CustomButton } from '../index';
 
 <template>
   <div class="button-demo">
-    <CustomButton type="primary">
-      主要按钮
+    <CustomButton
+      color="#18a058"
+      type="primary"
+    >
+      自定义绿色
     </CustomButton>
-    <CustomButton secondary>
-      次要按钮
+    <CustomButton
+      color="#d03050"
+      type="primary"
+    >
+      自定义红色
     </CustomButton>
-    <CustomButton> 默认按钮 </CustomButton>
+    <CustomButton
+      color="#2080f0"
+      type="primary"
+    >
+      自定义蓝色
+    </CustomButton>
   </div>
 </template>
 

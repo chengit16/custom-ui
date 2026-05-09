@@ -4,13 +4,24 @@ import { CustomButton } from '../index';
 
 <template>
   <div class="button-demo">
-    <CustomButton type="primary">
-      主要按钮
+    <CustomButton
+      type="primary"
+      round
+    >
+      圆角按钮
     </CustomButton>
-    <CustomButton secondary>
-      次要按钮
+    <CustomButton
+      type="primary"
+      circle
+    >
+      圆
     </CustomButton>
-    <CustomButton> 默认按钮 </CustomButton>
+    <CustomButton
+      secondary
+      circle
+    >
+      形
+    </CustomButton>
   </div>
 </template>
 

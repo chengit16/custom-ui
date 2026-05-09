@@ -4,13 +4,15 @@ import { CustomButton } from '../index';
 
 <template>
   <div class="button-demo">
-    <CustomButton type="primary">
-      主要按钮
+    <CustomButton tertiary>
+      次次要按钮
     </CustomButton>
-    <CustomButton secondary>
-      次要按钮
+    <CustomButton
+      tertiary
+      disabled
+    >
+      次次要禁用
     </CustomButton>
-    <CustomButton> 默认按钮 </CustomButton>
   </div>
 </template>
 
