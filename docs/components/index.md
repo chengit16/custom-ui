@@ -5,3 +5,4 @@
 ## 通用
 
 - [Button 按钮](/components/button)
+- [Modal 弹窗](/components/modal)

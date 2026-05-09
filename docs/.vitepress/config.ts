@@ -19,7 +19,8 @@ export default defineConfig({
       ],
       '/components/': [
         { text: '组件总览', link: '/components/' },
-        { text: 'Button 按钮', link: '/components/button' }
+        { text: 'Button 按钮', link: '/components/button' },
+        { text: 'Modal 弹窗', link: '/components/modal' }
       ],
       '/automation/': [
         { text: '组件流程', link: '/automation/component-workflow' },
