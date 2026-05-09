@@ -4,12 +4,9 @@
   --vp-content-width: 1040px;
   --vp-aside-width: 220px;
   --vp-nav-height: 56px;
-  --vp-c-bg: #ffffff;
-  --vp-c-bg-alt: #ffffff;
-  --vp-c-bg-soft: #ffffff;
   --custom-demo-border: var(--vp-c-divider);
-  --custom-demo-bg: #ffffff;
-  --custom-demo-toolbar-bg: #ffffff;
+  --custom-demo-bg: var(--vp-c-bg);
+  --custom-demo-toolbar-bg: var(--vp-c-bg);
 }
 
 html {
@@ -17,7 +14,7 @@ html {
 }
 
 body {
-  background: #ffffff;
+  background: var(--vp-c-bg);
 }
 
 .VPApp,
@@ -29,7 +26,7 @@ body {
 .VPDoc .aside,
 .VPDoc .content,
 .VPDocAside {
-  background: #ffffff;
+  background: var(--vp-c-bg);
 }
 
 .VPNav {
@@ -38,7 +35,7 @@ body {
 }
 
 .VPNavBar {
-  background: #ffffff;
+  background: var(--vp-c-bg);
 }
 
 .VPNavBarTitle .title {
@@ -62,7 +59,19 @@ body {
 .VPSidebar {
   border-right: 1px solid var(--vp-c-divider);
   padding: 8px 8px 12px;
-  background: #ffffff;
+  background: var(--vp-c-bg);
+}
+
+.VPSidebar,
+.VPSidebar .container,
+.VPSidebar .curtain,
+.VPSidebar .content {
+  background: var(--vp-c-bg) !important;
+}
+
+.VPSidebar .container::before,
+.VPSidebar .container::after {
+  background: var(--vp-c-bg) !important;
 }
 
 .VPSidebarContainer {
@@ -74,11 +83,11 @@ body {
 }
 
 .VPSidebarItem.level-0 > .item {
-  color: var(--vp-c-text-2);
-  font-size: 14px;
-  font-weight: 600;
+  color: var(--vp-c-text-1);
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: 0;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   text-transform: uppercase;
 }
 
@@ -97,16 +106,16 @@ body {
 }
 
 .VPSidebarGroup .title {
-  color: var(--vp-c-text-2);
-  font-size: 14px;
-  font-weight: 600;
+  color: var(--vp-c-text-1);
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: 0;
-  margin: 14px 0 8px;
+  margin: 10px 0 6px;
   text-transform: uppercase;
 }
 
 .VPSidebarGroup:first-child .title {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .VPSidebarGroup .items {
@@ -118,7 +127,7 @@ body {
 }
 
 .VPSidebar .curtain {
-  background: #ffffff;
+  background: var(--vp-c-bg);
 }
 
 @media (min-width: 960px) {
@@ -276,6 +285,11 @@ body {
   background: var(--vp-c-bg-soft);
 }
 
+.dark .vp-doc div[class*='language-'] pre,
+.dark .vp-doc div[class*='language-'] code {
+  background: var(--vp-c-bg-soft) !important;
+}
+
 .custom-demo {
   border: 1px solid var(--custom-demo-border);
   border-radius: 8px;
@@ -323,11 +337,32 @@ body {
   width: 14px;
 }
 
+.custom-demo__icon--text {
+  align-items: center;
+  display: inline-flex;
+  font-size: 13px;
+  height: 14px;
+  justify-content: center;
+  line-height: 1;
+  width: 14px;
+}
+
 .custom-demo__source {
   background: var(--custom-demo-bg);
   border-top: 1px solid var(--custom-demo-border);
   margin: 0;
   overflow: auto;
+}
+
+.dark .custom-demo,
+.dark .custom-demo__preview,
+.dark .custom-demo__toolbar,
+.dark .custom-demo__source {
+  background: var(--vp-c-bg) !important;
+}
+
+.dark .VPNav {
+  backdrop-filter: blur(10px);
 }
 
 .custom-demo__source pre,

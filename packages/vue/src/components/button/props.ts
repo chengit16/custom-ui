@@ -11,7 +11,11 @@ export type ButtonSize = 'tiny' | 'small' | 'medium' | 'large';
 export type ButtonGroupDirection = 'horizontal' | 'vertical';
 
 export const ButtonProps = {
-  /** 按钮类型，对应 Naive UI Button 的 type */
+  /**
+   * 按钮类型
+   *
+   * 用于控制按钮的语义色，可选值为 `default`、`primary`、`success`、`info`、`warning`、`error`。
+   */
   type: {
     type: String as PropType<ButtonType>,
     default: 'default',

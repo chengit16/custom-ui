@@ -19,6 +19,7 @@ import TertiaryDemo from '../../packages/vue/src/components/button/demo/tertiary
 import StatesDemo from '../../packages/vue/src/components/button/demo/states.vue';
 import TextDemo from '../../packages/vue/src/components/button/demo/text.vue';
 import TransparentDemo from '../../packages/vue/src/components/button/demo/transparent.vue';
+import TypeDemo from '../../packages/vue/src/components/button/demo/type.vue';
 import basicSource from '../../packages/vue/src/components/button/demo/basic.vue?raw';
 import colorSource from '../../packages/vue/src/components/button/demo/color.vue?raw';
 import dashedSource from '../../packages/vue/src/components/button/demo/dashed.vue?raw';
@@ -37,6 +38,7 @@ import tertiarySource from '../../packages/vue/src/components/button/demo/tertia
 import statesSource from '../../packages/vue/src/components/button/demo/states.vue?raw';
 import textSource from '../../packages/vue/src/components/button/demo/text.vue?raw';
 import transparentSource from '../../packages/vue/src/components/button/demo/transparent.vue?raw';
+import typeSource from '../../packages/vue/src/components/button/demo/type.vue?raw';
 </script>
 
 Button 基于 Naive UI 的 `NButton` 二次封装，保留常用按钮状态，并使用 `CustomButton` 作为对外组件名。
@@ -51,6 +53,12 @@ import { CustomButton } from '@custom-ui/vue';
 
 <DemoBlock :source="basicSource">
   <BasicDemo />
+</DemoBlock>
+
+### 按钮类型
+
+<DemoBlock :source="typeSource">
+  <TypeDemo />
 </DemoBlock>
 
 ### 次要按钮

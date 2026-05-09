@@ -120,18 +120,12 @@ onServerPrefetch(highlightSource);
         :aria-expanded="expanded"
         @click="expanded = !expanded"
       >
-        <svg
+        <span
           aria-hidden="true"
-          viewBox="0 0 16 16"
-          fill="none"
-          class="custom-demo__icon"
+          class="custom-demo__icon custom-demo__icon--text"
         >
-          <path
-            d="M3 5.5h10M3 8h10M3 10.5h10"
-            stroke="currentColor"
-            stroke-linecap="round"
-          />
-        </svg>
+          &lt;&gt;
+        </span>
         {{ expanded ? '收起代码' : '展开代码' }}
       </button>
     </div>
