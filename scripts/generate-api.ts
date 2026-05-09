@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
 import { runCli } from './shared/cli';
@@ -18,10 +18,25 @@ await runCli(async () => {
   const componentDir = resolve(root, 'packages/vue/src/components', names.kebab);
   const apiOutput = resolve(root, 'docs/components/generated', `${names.kebab}-api.md`);
 
+  const propsSource = resolve(componentDir, 'props.ts');
+  if (!existsSync(propsSource)) {
+    throw new Error(`Props metadata file does not exist: ${propsSource}`);
+  }
+
   const api = await readApiProperties(componentDir);
 
   if (api.length === 0) {
-    throw new Error(`No API metadata found for ${componentDir}. Add props.ts JSDoc annotations or api.ts entries.`);
+    throw new Error(`No API metadata found for ${componentDir}. Add JSDoc annotations in props.ts.`);
+  }
+
+  const missingDescriptions = api.filter(item => !item.description || !item.description.trim());
+
+  if (missingDescriptions.length > 0) {
+    throw new Error(
+      `Missing JSDoc annotations in ${propsSource} for: ${missingDescriptions
+        .map(item => item.name)
+        .join(', ')}`
+    );
   }
 
   const table = [

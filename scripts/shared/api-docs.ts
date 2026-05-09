@@ -1,6 +1,5 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 import ts from 'typescript';
 
@@ -69,34 +68,90 @@ function getCommentText(sourceText: string, node: ts.Node): string | undefined {
   return lines || undefined;
 }
 
-function serializeTypeText(typeText: string): string {
-  const propTypeMatch = typeText.match(/PropType<(.+)>$/s);
+function buildTypeAliasMap(sourceFile: ts.SourceFile): Map<string, ts.TypeNode> {
+  const aliases = new Map<string, ts.TypeNode>();
 
-  if (propTypeMatch) {
-    return propTypeMatch[1].trim();
+  for (const statement of sourceFile.statements) {
+    if (!ts.isTypeAliasDeclaration(statement)) {
+      continue;
+    }
+
+    aliases.set(statement.name.text, statement.type);
   }
 
-  if (typeText === 'String') {
-    return 'string';
-  }
-
-  if (typeText === 'Number') {
-    return 'number';
-  }
-
-  if (typeText === 'Boolean') {
-    return 'boolean';
-  }
-
-  return typeText;
+  return aliases;
 }
 
-function serializeDefaultText(defaultText: string): string {
-  return defaultText;
+function stringifyTypeNode(
+  typeNode: ts.TypeNode,
+  aliases: Map<string, ts.TypeNode>,
+  sourceFile: ts.SourceFile,
+  seen = new Set<string>()
+): string {
+  if (ts.isTypeReferenceNode(typeNode)) {
+    const typeName = typeNode.typeName.getText(sourceFile);
+
+    if (typeName === 'PropType' && typeNode.typeArguments?.[0]) {
+      return stringifyTypeNode(typeNode.typeArguments[0], aliases, sourceFile, seen);
+    }
+
+    const aliasTarget = aliases.get(typeName);
+
+    if (aliasTarget && !seen.has(typeName)) {
+      seen.add(typeName);
+      return stringifyTypeNode(aliasTarget, aliases, sourceFile, seen);
+    }
+
+    return typeName;
+  }
+
+  if (ts.isUnionTypeNode(typeNode)) {
+    return typeNode.types.map(member => stringifyTypeNode(member, aliases, sourceFile, seen)).join(' | ');
+  }
+
+  if (ts.isIntersectionTypeNode(typeNode)) {
+    return typeNode.types.map(member => stringifyTypeNode(member, aliases, sourceFile, seen)).join(' & ');
+  }
+
+  if (ts.isParenthesizedTypeNode(typeNode)) {
+    return `(${stringifyTypeNode(typeNode.type, aliases, sourceFile, seen)})`;
+  }
+
+  return typeNode.getText(sourceFile);
+}
+
+function stringifyInitializerType(
+  initializer: ts.Expression,
+  aliases: Map<string, ts.TypeNode>,
+  sourceFile: ts.SourceFile
+): string {
+  if (ts.isTypeAssertionExpression(initializer) || ts.isAsExpression(initializer)) {
+    const typeNode = initializer.type;
+    return stringifyTypeNode(typeNode, aliases, sourceFile);
+  }
+
+  const expression = unwrapExpression(initializer);
+
+  if (ts.isIdentifier(expression)) {
+    if (expression.text === 'String') {
+      return 'string';
+    }
+
+    if (expression.text === 'Number') {
+      return 'number';
+    }
+
+    if (expression.text === 'Boolean') {
+      return 'boolean';
+    }
+  }
+
+  return expression.getText(sourceFile);
 }
 
 function readPropsMetadataFromSource(sourceText: string): ApiProperty[] {
   const sourceFile = ts.createSourceFile('props.ts', sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const aliases = buildTypeAliasMap(sourceFile);
   const propsObject = getObjectLiteralFromPropsSource(sourceFile);
 
   if (!propsObject) {
@@ -109,14 +164,15 @@ function readPropsMetadataFromSource(sourceText: string): ApiProperty[] {
     }
 
     const propName = property.name.getText(sourceFile);
-    if (!ts.isObjectLiteralExpression(unwrapExpression(property.initializer))) {
+    const propInitializer = unwrapExpression(property.initializer);
+
+    if (!ts.isObjectLiteralExpression(propInitializer)) {
       return [];
     }
 
-    const propObject = unwrapExpression(property.initializer) as ts.ObjectLiteralExpression;
     const members = new Map<string, ts.PropertyAssignment>();
 
-    for (const member of propObject.properties) {
+    for (const member of propInitializer.properties) {
       if (ts.isPropertyAssignment(member) && ts.isIdentifier(member.name)) {
         members.set(member.name.text, member);
       }
@@ -124,71 +180,31 @@ function readPropsMetadataFromSource(sourceText: string): ApiProperty[] {
 
     const typeMember = members.get('type');
     const defaultMember = members.get('default');
-    const description = getCommentText(sourceText, property);
 
     return [
       {
         name: propName,
         type: typeMember
-          ? serializeTypeText(typeMember.initializer.getText(sourceFile))
+          ? stringifyInitializerType(typeMember.initializer, aliases, sourceFile)
           : 'unknown',
-        default: defaultMember ? serializeDefaultText(defaultMember.initializer.getText(sourceFile)) : undefined,
-        description
+        default: defaultMember ? defaultMember.initializer.getText(sourceFile) : undefined,
+        description: getCommentText(sourceText, property)
       }
     ];
   });
 }
 
-function mergeApiProperties(primary: ApiProperty[], fallback: ApiProperty[]): ApiProperty[] {
-  const byName = new Map<string, ApiProperty>();
-
-  for (const item of fallback) {
-    byName.set(item.name, item);
-  }
-
-  for (const item of primary) {
-    const existing = byName.get(item.name);
-
-    if (!existing) {
-      byName.set(item.name, item);
-      continue;
-    }
-
-    byName.set(item.name, {
-      name: item.name,
-      type: item.type || existing.type,
-      default: item.default ?? existing.default,
-      description: item.description?.trim() ? item.description : existing.description
-    });
-  }
-
-  return [...byName.values()];
-}
-
-export async function readApiProperties(componentDir: string): Promise<ApiProperty[]> {
+export function readApiProperties(componentDir: string): ApiProperty[] {
   const propsSourcePath = resolve(componentDir, 'props.ts');
-  const apiSourcePath = resolve(componentDir, 'api.ts');
 
-  const propsMetadata = existsSync(propsSourcePath)
-    ? readPropsMetadataFromSource(readFileSync(propsSourcePath, 'utf8'))
-    : [];
-
-  if (!existsSync(apiSourcePath)) {
-    return propsMetadata;
+  try {
+    return readPropsMetadataFromSource(readFileSync(propsSourcePath, 'utf8'));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to read props metadata from ${propsSourcePath}: ${message}`);
   }
-
-  const fallbackModule = (await import(pathToFileURL(apiSourcePath).href)) as { api?: ApiProperty[] };
-  const fallbackMetadata = fallbackModule.api ?? [];
-
-  return propsMetadata.length > 0
-    ? mergeApiProperties(propsMetadata, fallbackMetadata)
-    : fallbackMetadata;
 }
 
 export function readApiPropertiesFromPropsSource(sourceText: string): ApiProperty[] {
   return readPropsMetadataFromSource(sourceText);
-}
-
-export function mergeApiPropertiesWithFallback(primary: ApiProperty[], fallback: ApiProperty[]): ApiProperty[] {
-  return mergeApiProperties(primary, fallback);
 }

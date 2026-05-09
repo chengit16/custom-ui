@@ -15,7 +15,6 @@ await runCli(() => {
   const requiredFiles = [
     resolve(componentDir, `${names.kebab}.vue`),
     resolve(componentDir, 'props.ts'),
-    resolve(componentDir, 'api.ts'),
     resolve(componentDir, 'index.ts'),
     resolve(componentDir, 'demo/basic.vue'),
     resolve(componentDir, `__tests__/${names.kebab}.test.ts`),

@@ -34,7 +34,6 @@ await runCli(() => {
   const names = getComponentNames(process.argv[2]);
   const componentDir = resolve(root, 'packages/vue/src/components', names.kebab);
   const docsFile = resolve(root, 'docs/components', `${names.kebab}.md`);
-  const apiFile = resolve(componentDir, 'api.ts');
   const componentIndex = resolve(root, 'packages/vue/src/components/index.ts');
 
   const targetFiles: TargetFile[] = [
@@ -68,19 +67,6 @@ export const ${names.pascal}Props = {
     default: 'default'
   }
 } as const;
-`
-    },
-    {
-      path: apiFile,
-      content: `import type { ApiProperty } from '../../scripts-api';
-
-export const api: ApiProperty[] = [
-  {
-    name: 'variant',
-    type: "'default' | 'primary'",
-    default: "'default'"
-  }
-];
 `
     },
     {

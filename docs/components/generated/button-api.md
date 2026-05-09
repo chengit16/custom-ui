@@ -1,7 +1,7 @@
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| type | `ButtonType` | 'default' | 按钮类型，对应 Naive UI Button 的 type |
-| size | `ButtonSize` | 'medium' | 按钮尺寸 |
+| type | `'default' \| 'primary' \| 'success' \| 'info' \| 'warning' \| 'error'` | 'default' | 按钮类型，对应 Naive UI Button 的 type |
+| size | `'tiny' \| 'small' \| 'medium' \| 'large'` | 'medium' | 按钮尺寸 |
 | disabled | `boolean` | false | 是否禁用按钮 |
 | loading | `boolean` | false | 是否展示加载状态 |
 | block | `boolean` | false | 是否让按钮宽度撑满父容器 |
