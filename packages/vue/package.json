@@ -1,6 +1,6 @@
 {
   "name": "@danran_chen/custom-ui-vue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Custom UI Vue component library built on Naive UI.",
   "type": "module",
   "sideEffects": [

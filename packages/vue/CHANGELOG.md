@@ -1,5 +1,18 @@
 # @danran_chen/custom-ui-vue
 
+## 0.0.3
+
+### Patch Changes
+
+- 08133ba: 自动生成的版本日志草稿，来源于 `git log custom-ui-vue-v0.0.1..69a96c1`，基线取最近一次 release tag。
+
+  ### 文档
+  - 文档：add changeset:auto command for automated version logging and update publishing workflow
+  - 文档：refine versioning process and update publishing instructions for clarity
+
+  ### 维护
+  - 维护：完善中文提交与版本日志流程
+
 ## 0.0.2
 
 ### 补丁变更
