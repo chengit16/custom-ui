@@ -73,7 +73,7 @@ pnpm publish:vue
 3. 运行 `pnpm changeset:auto` 自动生成版本日志草稿
 4. 运行 `pnpm release:check`
 5. 运行 `pnpm publish:vue`，脚本会自动完成版本更新和 npm 发布
-6. 推送到 GitHub，触发文档自动部署
+6. 推送到 GitHub，建议使用 `git push --follow-tags`，触发文档自动部署
 
 ## 技术栈
 

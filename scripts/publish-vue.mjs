@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 
@@ -7,6 +7,7 @@ const autoChangesetFile = resolve(
   root,
   '.changeset/auto-generated-release.md',
 );
+const packageJsonPath = resolve(root, 'packages/vue/package.json');
 
 function run(command, args) {
   const result = spawnSync(command, args, {
@@ -28,6 +29,16 @@ function run(command, args) {
   if (result.status !== 0) {
     process.exit(result.status ?? 1);
   }
+}
+
+function readPackageVersion() {
+  const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+
+  if (typeof pkg.version !== 'string' || !pkg.version) {
+    throw new Error(`Failed to read package version from ${packageJsonPath}.`);
+  }
+
+  return pkg.version;
 }
 
 async function runCli(action) {
@@ -59,4 +70,18 @@ await runCli(() => {
     '--access',
     'public',
   ]);
+
+  const version = readPackageVersion();
+  const tagName = `custom-ui-vue-v${version}`;
+  const tagCheck = spawnSync('git', ['rev-parse', '-q', '--verify', `refs/tags/${tagName}`], {
+    cwd: root,
+    encoding: 'utf8',
+    shell: false,
+  });
+
+  if (tagCheck.status !== 0) {
+    run('git', ['tag', '-a', tagName, '-m', `Release ${version}`]);
+  }
+
+  console.log(`Created/verified release tag: ${tagName}`);
 });

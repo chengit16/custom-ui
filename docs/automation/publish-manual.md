@@ -10,7 +10,7 @@
 pnpm changeset:auto
 ```
 
-它会自动读取当前分支相对 `origin/main` 的 git 提交，生成 `.changeset/auto-generated-release.md` 草稿。未提交的改动不会被收录，所以这一步通常放在相关 commit 完成之后。
+它会自动读取最近一次 release tag 之后的 git 提交，生成 `.changeset/auto-generated-release.md` 草稿。未提交的改动不会被收录，所以这一步通常放在相关 commit 完成之后。
 
 如果自动摘要不够准确，可以直接编辑这个文件补充说明。
 
@@ -87,7 +87,7 @@ npm login
 pnpm publish:vue
 ```
 
-这条命令会自动生成版本日志、更新版本号，并只发布 `packages/vue`，不会发 workspace 根目录。
+这条命令会自动生成版本日志、更新版本号、发布 `packages/vue`，并在成功后创建 release tag。
 
 ## 6. 发布后检查
 
@@ -103,10 +103,10 @@ git status --short
 
 ## 7. 文档站
 
-发布 npm 后，推送到 GitHub 会自动触发文档部署。
+发布 npm 后，建议用 `git push --follow-tags` 推送代码和 release tag，这样 GitHub Pages 和后续版本日志都能接上。
 
 ```bash
-git push
+git push --follow-tags
 ```
 
 GitHub Pages 会根据 `.github/workflows/deploy-docs.yml` 自动构建 `docs/.vitepress/dist` 并发布。
@@ -147,3 +147,7 @@ pnpm publish:vue
 - 仓库是公开的
 - `Settings -> Pages` 的 Source 选的是 `GitHub Actions`
 - 最新 push 是否触发了 `Deploy Docs`
+
+### 自动日志为空
+
+检查最近是否已经打过 release tag。这个流程默认从最新的 `custom-ui-vue-v*` tag 开始计算提交范围。

@@ -24,19 +24,44 @@ function runGit(args) {
 }
 
 function getBaseRef() {
-  for (const candidate of ['origin/main', 'main']) {
-    const result = spawnSync('git', ['merge-base', 'HEAD', candidate], {
+  const tagResult = spawnSync(
+    'git',
+    ['describe', '--tags', '--match', 'custom-ui-vue-v*', '--abbrev=0'],
+    {
       cwd: root,
       encoding: 'utf8',
       shell: false,
-    });
+    },
+  );
 
-    if (result.status === 0) {
-      const base = result.stdout.trim();
+  if (tagResult.status === 0) {
+    const tag = tagResult.stdout.trim();
 
-      if (base) {
-        return base;
-      }
+    if (tag) {
+      return tag;
+    }
+  }
+
+  const releaseMarkers = [
+    'packages/vue/package.json',
+    'packages/vue/CHANGELOG.md',
+  ];
+
+  const result = spawnSync(
+    'git',
+    ['log', '-n', '1', '--format=%H', '--', ...releaseMarkers],
+    {
+      cwd: root,
+      encoding: 'utf8',
+      shell: false,
+    },
+  );
+
+  if (result.status === 0) {
+    const base = result.stdout.trim();
+
+    if (base) {
+      return base;
     }
   }
 
@@ -158,7 +183,7 @@ function buildContent(commits, baseRef) {
     `'${packageName}': ${bump}`,
     '---',
     '',
-    `自动生成的版本日志草稿，来源于 \`git log ${shortBase}..${shortHead}\`。`,
+    `自动生成的版本日志草稿，来源于 \`git log ${shortBase}..${shortHead}\`，基线取最近一次版本/日志提交。`,
     '',
   ];
 

@@ -1,6 +1,6 @@
 # 版本日志
 
-这份日志由 Changesets 驱动。新增组件、修复问题或修改文档时，优先运行自动生成命令，它会根据当前分支相对 `origin/main` 的 git 提交自动写入 changeset 草稿；未提交的改动不会被收录。正式发布时直接运行 `pnpm publish:vue`，脚本会自动完成版本更新并把日志合并到这里引用的 `packages/vue/CHANGELOG.md`。
+这份日志由 Changesets 驱动。新增组件、修复问题或修改文档时，优先运行自动生成命令，它会读取最近一次 release tag 之后的 git 提交，并自动写入 changeset 草稿；未提交的改动不会被收录。正式发布时直接运行 `pnpm publish:vue`，脚本会自动完成版本更新、发布 npm，并创建新的 release tag。
 
 ## 使用方式
 
@@ -22,6 +22,8 @@ pnpm release:check
 ```bash
 pnpm publish:vue
 ```
+
+发布成功后，脚本会创建类似 `custom-ui-vue-v0.0.2` 这样的 release tag。后续自动日志就会从这个 tag 开始往后计算。
 
 ## 当前日志
 
