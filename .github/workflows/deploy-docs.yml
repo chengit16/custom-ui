@@ -24,8 +24,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -36,11 +34,14 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Build docs
         run: pnpm docs:build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
 
