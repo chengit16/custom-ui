@@ -1,28 +1,26 @@
 # 发布操作手册
 
-这份手册用于 `@danran_chen/custom-ui-vue` 的正式发布流程。顺序不要跳。
+这份手册用于 `@danran_chen/custom-ui-vue` 的正式发布流程。发布命令会自动生成版本日志并更新版本号，发布前仍建议先做检查。
 
-## 1. 写入版本日志条目
+## 1. 自动生成版本日志条目
 
-每次准备发新版本前，先写 changeset：
-
-```bash
-pnpm changeset
-```
-
-按提示选择：
-
-- 影响的包：`@danran_chen/custom-ui-vue`
-- 版本类型：`patch`、`minor` 或 `major`
-- 变更说明：用中文写清楚新增、修改或修复内容
-
-准备正式发布时，运行：
+每次准备发新版本前，可以先运行自动生成命令预览版本日志草稿：
 
 ```bash
-pnpm version:packages
+pnpm changeset:auto
 ```
 
-这一步会根据 changeset 自动更新：
+它会自动读取当前分支相对 `origin/main` 的 git 提交，生成 `.changeset/auto-generated-release.md` 草稿。未提交的改动不会被收录，所以这一步通常放在相关 commit 完成之后。
+
+如果自动摘要不够准确，可以直接编辑这个文件补充说明。
+
+正式发布时不需要手动运行 `pnpm version:packages`，发布命令会自动完成这一步：
+
+```bash
+pnpm publish:vue
+```
+
+发布命令会再次自动生成版本日志，再根据 changeset 自动更新：
 
 - `packages/vue/package.json` 的版本号
 - `packages/vue/CHANGELOG.md` 的版本日志
@@ -48,7 +46,7 @@ pnpm release:check
 
 如果这一步失败，先修复失败项，再继续。
 
-## 3. 确认包版本
+## 3. 确认发布包
 
 当前发布包是：
 
@@ -56,13 +54,13 @@ pnpm release:check
 @danran_chen/custom-ui-vue
 ```
 
-发布前请确认 `packages/vue/package.json` 里的版本号正确。
+发布前请确认 `packages/vue/package.json` 里的包名正确。
 
 ```bash
 sed -n '1,40p' packages/vue/package.json
 ```
 
-如果需要发新版本，不要手改版本号，使用 `pnpm version:packages` 生成版本号和版本日志，再重新跑一遍 `pnpm release:check`。
+如果需要发新版本，不要手改版本号，直接运行 `pnpm publish:vue`。脚本会自动生成 changeset 草稿，并在发布前更新版本号和 `CHANGELOG`。
 
 ## 4. 准备 npm 认证
 
@@ -89,7 +87,7 @@ npm login
 pnpm publish:vue
 ```
 
-这条命令只发布 `packages/vue`，不会发 workspace 根目录。
+这条命令会自动生成版本日志、更新版本号，并只发布 `packages/vue`，不会发 workspace 根目录。
 
 ## 6. 发布后检查
 

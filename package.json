@@ -13,6 +13,7 @@
     "docs:build": "pnpm --filter @custom-ui/docs build",
     "example:dev": "pnpm --filter @custom-ui/example-vite dev",
     "changeset": "changeset",
+    "changeset:auto": "node scripts/changeset-auto.mjs",
     "version:packages": "changeset version",
     "prepack": "pnpm exec husky",
     "lint": "eslint .",
@@ -22,7 +23,7 @@
     "check-component": "tsx scripts/check-component.ts",
     "generate-api": "tsx scripts/generate-api.ts",
     "release:check": "tsx scripts/release-check.ts",
-    "publish:vue": "pnpm --filter @danran_chen/custom-ui-vue exec npm publish --access public"
+    "publish:vue": "node scripts/publish-vue.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",

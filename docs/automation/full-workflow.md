@@ -65,6 +65,7 @@ pnpm docs:dev
 如果需要发布：
 
 ```bash
+pnpm changeset:auto
 pnpm release:check
 pnpm publish:vue
 git push
