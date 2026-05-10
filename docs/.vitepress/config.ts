@@ -46,6 +46,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: '组件流程', link: '/automation/component-workflow' },
+            { text: '发布操作手册', link: '/automation/publish-manual' },
             { text: '发布检查', link: '/automation/release' },
             { text: 'Phase 1 总结', link: '/automation/phase-1-summary' },
           ],
