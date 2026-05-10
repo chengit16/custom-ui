@@ -8,6 +8,7 @@
 项目搭建
   -> Skill 与 AI 流程
   -> 组件流程
+  -> 版本日志
   -> 文档部署
   -> npm 发布
 ```
@@ -17,6 +18,7 @@
 - [项目搭建](/automation/project-setup)
 - [Skill 与 AI 流程](/automation/skill-workflow)
 - [组件流程](/automation/component-workflow)
+- [版本日志](/automation/version-log)
 - [文档部署](/automation/docs-deploy)
 - [发布操作手册](/automation/publish-manual)
 
@@ -74,5 +76,6 @@ git push
 - `props.ts` 的中文 JSDoc 是 API 表格的事实来源。
 - demo 必须是真实 `.vue` 文件，文档预览和源码展示必须来自同一份 demo。
 - 文档站新增页面后要更新 `docs/.vitepress/config.ts` 的侧栏。
+- 每次发布前通过 Changesets 生成版本日志。
 - 发布前必须先跑 `pnpm release:check`。
 - 不在仓库根目录执行 `npm publish`，统一使用 `pnpm publish:vue`。

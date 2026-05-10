@@ -8,6 +8,7 @@
 - 封装 `Naive UI` 组件并保留可扩展性
 - 内置 `VitePress` 文档站
 - 支持 demo + API 自动生成
+- 支持 Changesets 自动生成版本日志
 - 支持发布前 `dry-run` 检查
 - 支持 GitHub Pages 自动部署
 
@@ -54,6 +55,8 @@ pnpm build
 pnpm typecheck
 pnpm test
 pnpm docs:build
+pnpm changeset
+pnpm version:packages
 pnpm release:check
 pnpm publish:vue
 ```
@@ -68,9 +71,11 @@ pnpm publish:vue
 
 1. 开发组件
 2. 生成或更新 demo 和 API 文档
-3. 运行 `pnpm release:check`
-4. 运行 `pnpm publish:vue`
-5. 推送到 GitHub，触发文档自动部署
+3. 运行 `pnpm changeset` 写入版本日志条目
+4. 发布前运行 `pnpm version:packages` 自动生成版本号和 CHANGELOG
+5. 运行 `pnpm release:check`
+6. 运行 `pnpm publish:vue`
+7. 推送到 GitHub，触发文档自动部署
 
 ## 技术栈
 

@@ -49,6 +49,7 @@ export default defineConfig({
             { text: '项目搭建', link: '/automation/project-setup' },
             { text: 'Skill 与 AI 流程', link: '/automation/skill-workflow' },
             { text: '组件流程', link: '/automation/component-workflow' },
+            { text: '版本日志', link: '/automation/version-log' },
             { text: '文档部署', link: '/automation/docs-deploy' },
             { text: '发布操作手册', link: '/automation/publish-manual' },
           ],

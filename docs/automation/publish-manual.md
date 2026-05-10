@@ -2,7 +2,32 @@
 
 这份手册用于 `@danran_chen/custom-ui-vue` 的正式发布流程。顺序不要跳。
 
-## 1. 发布前检查
+## 1. 写入版本日志条目
+
+每次准备发新版本前，先写 changeset：
+
+```bash
+pnpm changeset
+```
+
+按提示选择：
+
+- 影响的包：`@danran_chen/custom-ui-vue`
+- 版本类型：`patch`、`minor` 或 `major`
+- 变更说明：用中文写清楚新增、修改或修复内容
+
+准备正式发布时，运行：
+
+```bash
+pnpm version:packages
+```
+
+这一步会根据 changeset 自动更新：
+
+- `packages/vue/package.json` 的版本号
+- `packages/vue/CHANGELOG.md` 的版本日志
+
+## 2. 发布前检查
 
 先确认工作区没有明显异常。
 
@@ -23,7 +48,7 @@ pnpm release:check
 
 如果这一步失败，先修复失败项，再继续。
 
-## 2. 确认包版本
+## 3. 确认包版本
 
 当前发布包是：
 
@@ -37,9 +62,9 @@ pnpm release:check
 sed -n '1,40p' packages/vue/package.json
 ```
 
-如果需要发新版本，先更新版本号，再重新跑一遍 `pnpm release:check`。
+如果需要发新版本，不要手改版本号，使用 `pnpm version:packages` 生成版本号和版本日志，再重新跑一遍 `pnpm release:check`。
 
-## 3. 准备 npm 认证
+## 4. 准备 npm 认证
 
 先确认已登录：
 
@@ -55,7 +80,7 @@ npm login
 
 如果 npm 要求 2FA，但你想走非交互发布，就需要在 npm 后台创建带 `Bypass 2FA` 的 granular token，然后配置到本机。
 
-## 4. 真实发布
+## 5. 真实发布
 
 不要在仓库根目录直接 `npm publish`。  
 请使用仓库脚本：
@@ -66,7 +91,7 @@ pnpm publish:vue
 
 这条命令只发布 `packages/vue`，不会发 workspace 根目录。
 
-## 5. 发布后检查
+## 6. 发布后检查
 
 发布成功后，建议确认两件事：
 
@@ -78,7 +103,7 @@ git status --short
 - `npm view` 应该能看到新版本
 - `git status` 应该只保留你还没提交的工作区改动
 
-## 6. 文档站
+## 7. 文档站
 
 发布 npm 后，推送到 GitHub 会自动触发文档部署。
 
@@ -88,7 +113,7 @@ git push
 
 GitHub Pages 会根据 `.github/workflows/deploy-docs.yml` 自动构建 `docs/.vitepress/dist` 并发布。
 
-## 7. 常见问题
+## 8. 常见问题
 
 ### `EPRIVATE`
 
