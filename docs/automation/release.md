@@ -1,5 +1,7 @@
 # 发布检查
 
+> 这页是早期发布检查说明，完整发布流程请以 [发布操作手册](/automation/publish-manual) 为准；文档站部署请看 [文档部署](/automation/docs-deploy)。
+
 第一阶段不发布 npm，只执行发布前 dry-run。
 
 ```bash

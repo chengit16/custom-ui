@@ -11,7 +11,7 @@ export default defineConfig({
     nav: [
       { text: '快速开始', link: '/guide/getting-started' },
       { text: '基础组件', link: '/components/' },
-      { text: '自动化', link: '/automation/component-workflow' },
+      { text: '自动化', link: '/automation/full-workflow' },
       { text: 'GitHub', link: 'https://github.com/chengit16/custom-ui' },
     ],
     sidebar: {
@@ -45,11 +45,12 @@ export default defineConfig({
           text: '流程',
           collapsed: false,
           items: [
+            { text: '全流程总览', link: '/automation/full-workflow' },
+            { text: '项目搭建', link: '/automation/project-setup' },
+            { text: 'Skill 与 AI 流程', link: '/automation/skill-workflow' },
             { text: '组件流程', link: '/automation/component-workflow' },
             { text: '文档部署', link: '/automation/docs-deploy' },
             { text: '发布操作手册', link: '/automation/publish-manual' },
-            { text: '发布检查', link: '/automation/release' },
-            { text: 'Phase 1 总结', link: '/automation/phase-1-summary' },
           ],
         },
       ],

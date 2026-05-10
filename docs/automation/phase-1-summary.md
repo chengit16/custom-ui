@@ -1,5 +1,7 @@
 # Phase 1 总结
 
+> 这是阶段性归档页，主要用于回看早期搭建过程。当前请优先阅读 [全流程总览](/automation/full-workflow)、[发布操作手册](/automation/publish-manual) 和 [文档部署](/automation/docs-deploy)。
+
 Phase 1 已经完成 Custom UI Vue 组件库的基础流程搭建，包括工作区、组件包、文档站、示例应用、自动化脚本、AI skills 和发布 dry-run 流程。
 
 ## 已完成内容

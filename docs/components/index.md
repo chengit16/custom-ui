@@ -1,8 +1,29 @@
 # 组件
 
-组件页由自动化流程创建，包含真实 demo、源码展示和 API 表格。
+组件页用于查看 Custom UI 当前已经封装的组件。每个组件文档都包含真实 demo、源码展示和 API 表格，方便在开发前确认能力边界。
+
+## 阅读方式
+
+建议按这个顺序查看组件：
+
+1. 先看组件简介，确认它封装的是哪个 Naive UI 基础组件。
+2. 再看代码演示，确认常用状态、交互和组合方式。
+3. 最后看 API 表，确认 Props、默认值和插槽说明。
+
+## 文档约定
+
+- demo 来自 `packages/vue/src/components/{component-name}/demo/`。
+- API 表来自 `props.ts` 的中文 JSDoc 注释。
+- 文档预览和源码展示必须引用同一个 demo 文件。
+- 新增组件时，需要同步更新本页和左侧菜单。
 
 ## 通用
 
-- [Button 按钮](/components/button)
-- [Modal 弹窗](/components/modal)
+| 组件                              | 说明                                                                         | 状态       |
+| --------------------------------- | ---------------------------------------------------------------------------- | ---------- |
+| [Button 按钮](/components/button) | 基于 Naive UI `NButton` 封装，覆盖类型、尺寸、状态、图标、按钮组等常用能力。 | 已补全文档 |
+| [Modal 弹窗](/components/modal)   | 基于 Naive UI `NModal` 封装，提供基础弹窗展示、标题、关闭和受控显示能力。    | 基础可用   |
+
+## 继续开发
+
+新增组件请先阅读 [组件流程](/automation/component-workflow)，按“创建组件、写 demo、补 JSDoc、生成 API、跑检查”的顺序执行。
