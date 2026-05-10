@@ -12,7 +12,7 @@ export default defineConfig({
       { text: '快速开始', link: '/guide/getting-started' },
       { text: '基础组件', link: '/components/' },
       { text: '自动化', link: '/automation/component-workflow' },
-      { text: 'Gitee', link: 'https://gitee.com/sixblog/custom-ui' },
+      { text: 'GitHub', link: 'https://github.com/chengit16/custom-ui' },
     ],
     sidebar: {
       '/guide/': [

@@ -10,11 +10,10 @@ pnpm release:check
 
 ## 文档部署
 
-如果仓库托管在 Gitee，可以先执行：
+文档站使用 GitHub Pages 自动部署。代码推送到 `main` 分支后，GitHub Actions 会自动执行：
 
 ```bash
 pnpm docs:build
-pnpm docs:deploy:gitee
 ```
 
-该流程会把 `docs/.vitepress/dist` 推送到仓库的 `pages` 分支，供 Gitee Pages 发布使用。首次使用时，需要在 Gitee 仓库页面里手动开启 Pages，并选择 `pages` 分支作为发布源。
+构建产物来自 `docs/.vitepress/dist`，由 `.github/workflows/deploy-docs.yml` 上传到 GitHub Pages。首次使用时，需要在 GitHub 仓库的 `Settings` -> `Pages` 中选择 `GitHub Actions` 作为发布源。
