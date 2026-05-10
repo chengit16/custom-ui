@@ -8,18 +8,19 @@
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "build": "pnpm --filter @custom-ui/vue build",
+    "build": "pnpm --filter @danran_chen/custom-ui-vue build",
     "docs:dev": "pnpm --filter @custom-ui/docs dev",
     "docs:build": "pnpm --filter @custom-ui/docs build",
     "example:dev": "pnpm --filter @custom-ui/example-vite dev",
     "prepack": "pnpm exec husky",
     "lint": "eslint .",
-    "typecheck": "pnpm --filter @custom-ui/vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
+    "typecheck": "pnpm --filter @danran_chen/custom-ui-vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
     "test": "vitest run",
     "create-component": "tsx scripts/create-component.ts",
     "check-component": "tsx scripts/check-component.ts",
     "generate-api": "tsx scripts/generate-api.ts",
-    "release:check": "tsx scripts/release-check.ts"
+    "release:check": "tsx scripts/release-check.ts",
+    "publish:vue": "pnpm --filter @danran_chen/custom-ui-vue exec npm publish --access public"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",

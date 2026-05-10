@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the first usable foundation for `@custom-ui/vue`: monorepo, Vue package, VitePress docs, examples app, automation scripts, release dry-run, and AI skills.
+**Goal:** Build the first usable foundation for `custom-ui-vue`: monorepo, Vue package, VitePress docs, examples app, automation scripts, release dry-run, and AI skills.
 
 **Architecture:** Use a pnpm workspace with one library package in `packages/vue`, one VitePress docs app in `docs`, and one Vite example app in `examples/vite`. Keep automation in `scripts` and make AI skills call those scripts instead of relying on ad hoc file creation.
 
@@ -17,7 +17,7 @@
 - `tsconfig.base.json`: shared TypeScript defaults.
 - `eslint.config.mjs`: root ESLint flat config.
 - `.changeset/config.json`: dry-run release configuration.
-- `packages/vue/package.json`: package metadata for `@custom-ui/vue`.
+- `packages/vue/package.json`: package metadata for `custom-ui-vue`.
 - `packages/vue/vite.config.ts`: library build configuration.
 - `packages/vue/tsconfig.json`: library TypeScript configuration.
 - `packages/vue/src/index.ts`: public package exports.
@@ -58,6 +58,7 @@
 ## Task 1: Root Workspace Scaffold
 
 **Files:**
+
 - Create: `package.json`
 - Create: `pnpm-workspace.yaml`
 - Create: `tsconfig.base.json`
@@ -80,12 +81,12 @@ Create `package.json` with:
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "build": "pnpm --filter @custom-ui/vue build",
+    "build": "pnpm --filter custom-ui-vue build",
     "docs:dev": "pnpm --filter @custom-ui/docs dev",
     "docs:build": "pnpm --filter @custom-ui/docs build",
     "example:dev": "pnpm --filter @custom-ui/example-vite dev",
     "lint": "eslint .",
-    "typecheck": "pnpm --filter @custom-ui/vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
+    "typecheck": "pnpm --filter custom-ui-vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
     "test": "vitest run",
     "create-component": "tsx scripts/create-component.ts",
     "check-component": "tsx scripts/check-component.ts",
@@ -153,17 +154,17 @@ export default [
       '**/.vitepress/cache/**',
       '**/.vitepress/dist/**',
       '**/coverage/**',
-      '**/node_modules/**'
-    ]
+      '**/node_modules/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx,vue}'],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off'
-    }
-  }
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];
 ```
 
@@ -218,6 +219,7 @@ git commit -m "chore: scaffold workspace tooling"
 ## Task 2: Vue Library Package
 
 **Files:**
+
 - Create: `packages/vue/package.json`
 - Create: `packages/vue/tsconfig.json`
 - Create: `packages/vue/vite.config.ts`
@@ -233,7 +235,7 @@ git commit -m "chore: scaffold workspace tooling"
 
 ```json
 {
-  "name": "@custom-ui/vue",
+  "name": "custom-ui-vue",
   "version": "0.0.0",
   "description": "Custom UI Vue component library built on Naive UI.",
   "type": "module",
@@ -274,8 +276,8 @@ git commit -m "chore: scaffold workspace tooling"
     "declaration": true,
     "emitDeclarationOnly": false,
     "paths": {
-      "@custom-ui/vue": ["src/index.ts"],
-      "@custom-ui/vue/*": ["src/*"]
+      "custom-ui-vue": ["src/index.ts"],
+      "custom-ui-vue/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"],
@@ -297,20 +299,20 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'CustomUiVue',
       fileName: 'custom-ui-vue',
-      formats: ['es']
+      formats: ['es'],
     },
     rollupOptions: {
       external: ['vue', 'naive-ui'],
       output: {
         globals: {
           vue: 'Vue',
-          'naive-ui': 'naive'
-        }
-      }
+          'naive-ui': 'naive',
+        },
+      },
     },
     sourcemap: true,
-    emptyOutDir: false
-  }
+    emptyOutDir: false,
+  },
 });
 ```
 
@@ -345,15 +347,17 @@ export interface CustomThemeOptions {
   primaryColor?: string;
 }
 
-export function createCustomTheme(options: CustomThemeOptions = {}): GlobalThemeOverrides {
+export function createCustomTheme(
+  options: CustomThemeOptions = {},
+): GlobalThemeOverrides {
   const primaryColor = options.primaryColor ?? '#18a058';
 
   return {
     common: {
       primaryColor,
       primaryColorHover: primaryColor,
-      primaryColorPressed: primaryColor
-    }
+      primaryColorPressed: primaryColor,
+    },
   };
 }
 ```
@@ -366,7 +370,11 @@ Create `packages/vue/src/vite-env.d.ts`:
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
 
-  const component: DefineComponent<Record<string, unknown>, Record<string, unknown>, unknown>;
+  const component: DefineComponent<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    unknown
+  >;
   export default component;
 }
 ```
@@ -378,7 +386,7 @@ declare module '*.vue' {
 import { NConfigProvider, type GlobalThemeOverrides } from 'naive-ui';
 
 defineOptions({
-  name: 'CustomProvider'
+  name: 'CustomProvider',
 });
 
 defineProps<{
@@ -402,10 +410,12 @@ import { describe, expect, it } from 'vitest';
 
 import { createCustomTheme, CustomProvider } from '../index';
 
-describe('@custom-ui/vue exports', () => {
+describe('custom-ui-vue exports', () => {
   it('exports the provider and theme helper', () => {
     expect(CustomProvider).toBeTruthy();
-    expect(createCustomTheme({ primaryColor: '#2080f0' }).common?.primaryColor).toBe('#2080f0');
+    expect(
+      createCustomTheme({ primaryColor: '#2080f0' }).common?.primaryColor,
+    ).toBe('#2080f0');
   });
 });
 ```
@@ -415,9 +425,9 @@ describe('@custom-ui/vue exports', () => {
 Run:
 
 ```bash
-pnpm --filter @custom-ui/vue typecheck
+pnpm --filter custom-ui-vue typecheck
 pnpm test packages/vue/src/__tests__/exports.test.ts
-pnpm --filter @custom-ui/vue build
+pnpm --filter custom-ui-vue build
 ```
 
 Expected: typecheck passes, test passes, `packages/vue/dist` is created.
@@ -432,6 +442,7 @@ git commit -m "feat: add vue library package"
 ## Task 3: VitePress Documentation Site
 
 **Files:**
+
 - Create: `docs/package.json`
 - Create: `docs/tsconfig.json`
 - Create: `docs/.vitepress/config.ts`
@@ -458,7 +469,7 @@ git commit -m "feat: add vue library package"
     "typecheck": "vue-tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@custom-ui/vue": "workspace:*",
+    "custom-ui-vue": "workspace:*",
     "naive-ui": "^2.43.2",
     "vitepress": "^1.6.4",
     "vue": "^3.5.25"
@@ -474,7 +485,7 @@ git commit -m "feat: add vue library package"
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@custom-ui/vue": ["../packages/vue/src/index.ts"]
+      "custom-ui-vue": ["../packages/vue/src/index.ts"]
     }
   },
   "include": [".vitepress/**/*.ts", ".vitepress/**/*.vue", "**/*.md"]
@@ -496,32 +507,31 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/getting-started' },
       { text: '组件', link: '/components/' },
-      { text: '自动化', link: '/automation/component-workflow' }
+      { text: '自动化', link: '/automation/component-workflow' },
     ],
     sidebar: {
       '/guide/': [
         { text: '快速开始', link: '/guide/getting-started' },
-        { text: '主题配置', link: '/guide/theme' }
+        { text: '主题配置', link: '/guide/theme' },
       ],
-      '/components/': [
-        { text: '组件总览', link: '/components/' }
-      ],
+      '/components/': [{ text: '组件总览', link: '/components/' }],
       '/automation/': [
         { text: '组件流程', link: '/automation/component-workflow' },
-        { text: '发布检查', link: '/automation/release' }
-      ]
+        { text: '发布检查', link: '/automation/release' },
+      ],
     },
     search: {
-      provider: 'local'
-    }
+      provider: 'local',
+    },
   },
   vite: {
     resolve: {
       alias: {
-        '@custom-ui/vue': new URL('../../packages/vue/src/index.ts', import.meta.url).pathname
-      }
-    }
-  }
+        'custom-ui-vue': new URL('../../packages/vue/src/index.ts', import.meta.url)
+          .pathname,
+      },
+    },
+  },
 });
 ```
 
@@ -535,7 +545,7 @@ import 'naive-ui/dist/index.css';
 import './styles.css';
 
 export default {
-  extends: DefaultTheme
+  extends: DefaultTheme,
 };
 ```
 
@@ -608,7 +618,7 @@ pnpm docs:dev
 pnpm example:dev
 ```
 
-组件库包名暂定为 `@custom-ui/vue`。真实发布前可以替换为正式 scope。
+组件库包名暂定为 `custom-ui-vue`。真实发布前可以替换为正式 scope。
 ````
 
 Create `docs/guide/theme.md`:
@@ -620,10 +630,10 @@ Create `docs/guide/theme.md`:
 
 ```vue
 <script setup lang="ts">
-import { CustomProvider, createCustomTheme } from '@custom-ui/vue';
+import { CustomProvider, createCustomTheme } from 'custom-ui-vue';
 
 const themeOverrides = createCustomTheme({
-  primaryColor: '#2080f0'
+  primaryColor: '#2080f0',
 });
 </script>
 
@@ -701,6 +711,7 @@ git commit -m "feat: add vitepress documentation site"
 ## Task 4: DemoBlock And Demo Source Contract
 
 **Files:**
+
 - Create: `docs/.vitepress/theme/components/DemoBlock.vue`
 - Modify: `docs/.vitepress/theme/index.ts`
 - Create: `docs/.vitepress/theme/demo-source.ts`
@@ -716,7 +727,7 @@ export interface DemoSource {
 
 export function normalizeDemoSource(source: string): DemoSource {
   return {
-    code: source.trim()
+    code: source.trim(),
   };
 }
 ```
@@ -759,7 +770,10 @@ async function copySource() {
         {{ expanded ? '收起代码' : '展开代码' }}
       </button>
     </div>
-    <pre v-if="expanded" class="custom-demo__source"><code>{{ demoSource.code }}</code></pre>
+    <pre
+      v-if="expanded"
+      class="custom-demo__source"
+    ><code>{{ demoSource.code }}</code></pre>
   </section>
 </template>
 ```
@@ -779,7 +793,7 @@ const theme: Theme = {
   extends: DefaultTheme,
   enhanceApp({ app }) {
     app.component('DemoBlock', DemoBlock);
-  }
+  },
 };
 
 export default theme;
@@ -806,6 +820,7 @@ git commit -m "feat: add vitepress demo block"
 ## Task 5: Example Vite App
 
 **Files:**
+
 - Create: `examples/vite/package.json`
 - Create: `examples/vite/index.html`
 - Create: `examples/vite/tsconfig.json`
@@ -828,7 +843,7 @@ Create `examples/vite/package.json`:
     "typecheck": "vue-tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@custom-ui/vue": "workspace:*",
+    "custom-ui-vue": "workspace:*",
     "naive-ui": "^2.43.2",
     "vue": "^3.5.25"
   },
@@ -872,11 +887,11 @@ Create `examples/vite/src/App.vue`:
 
 ```vue
 <script setup lang="ts">
-import { CustomProvider, createCustomTheme } from '@custom-ui/vue';
+import { CustomProvider, createCustomTheme } from 'custom-ui-vue';
 import { NButton } from 'naive-ui';
 
 const themeOverrides = createCustomTheme({
-  primaryColor: '#2080f0'
+  primaryColor: '#2080f0',
 });
 </script>
 
@@ -906,7 +921,7 @@ Create `examples/vite/tsconfig.json`:
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@custom-ui/vue": ["../../packages/vue/src/index.ts"]
+      "custom-ui-vue": ["../../packages/vue/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"]
@@ -923,9 +938,10 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@custom-ui/vue': new URL('../../packages/vue/src/index.ts', import.meta.url).pathname
-    }
-  }
+      'custom-ui-vue': new URL('../../packages/vue/src/index.ts', import.meta.url)
+        .pathname,
+    },
+  },
 });
 ```
 
@@ -950,6 +966,7 @@ git commit -m "feat: add vite example app"
 ## Task 6: Component Automation Scripts
 
 **Files:**
+
 - Create: `scripts/shared/names.ts`
 - Create: `scripts/create-component.ts`
 - Create: `scripts/check-component.ts`
@@ -983,7 +1000,9 @@ export function toPascalCase(value: string): string {
 
 export function getComponentNames(input: string | undefined): ComponentNames {
   if (!input) {
-    throw new Error('Component name is required. Example: pnpm create-component Button');
+    throw new Error(
+      'Component name is required. Example: pnpm create-component Button',
+    );
   }
 
   const pascal = toPascalCase(input);
@@ -996,7 +1015,7 @@ export function getComponentNames(input: string | undefined): ComponentNames {
   return {
     raw: input,
     pascal,
-    kebab
+    kebab,
   };
 }
 ```
@@ -1040,7 +1059,7 @@ defineProps(${names.pascal}Props);
     <slot />
   </div>
 </template>
-`
+`,
 );
 
 writeNewFile(
@@ -1053,7 +1072,7 @@ export const ${names.pascal}Props = {
     default: 'default'
   }
 } as const;
-`
+`,
 );
 
 writeNewFile(
@@ -1068,14 +1087,14 @@ export const api: ApiProperty[] = [
     description: 'Controls the visual variant.'
   }
 ];
-`
+`,
 );
 
 writeNewFile(
   resolve(componentDir, 'index.ts'),
   `export { default as Custom${names.pascal} } from './${names.kebab}.vue';
 export * from './props';
-`
+`,
 );
 
 writeNewFile(
@@ -1087,7 +1106,7 @@ import { Custom${names.pascal} } from '../index';
 <template>
   <Custom${names.pascal}>Basic ${names.pascal}</Custom${names.pascal}>
 </template>
-`
+`,
 );
 
 writeNewFile(
@@ -1101,7 +1120,7 @@ describe('Custom${names.pascal}', () => {
     expect(Custom${names.pascal}).toBeTruthy();
   });
 });
-`
+`,
 );
 
 writeNewFile(
@@ -1115,7 +1134,7 @@ writeNewFile(
 ## API
 
 <!-- API table is generated by pnpm generate-api ${names.pascal}. -->
-`
+`,
 );
 
 const componentIndex = resolve(root, 'packages/vue/src/components/index.ts');
@@ -1162,7 +1181,7 @@ const requiredFiles = [
   resolve(componentDir, 'index.ts'),
   resolve(componentDir, 'demo/basic.vue'),
   resolve(componentDir, `__tests__/${names.kebab}.test.ts`),
-  resolve(root, 'docs/components', `${names.kebab}.md`)
+  resolve(root, 'docs/components', `${names.kebab}.md`),
 ];
 
 const missing = requiredFiles.filter(file => !existsSync(file));
@@ -1195,8 +1214,17 @@ interface ApiProperty {
 
 const root = resolve(import.meta.dirname, '..');
 const names = getComponentNames(process.argv[2]);
-const apiSource = resolve(root, 'packages/vue/src/components', names.kebab, 'api.ts');
-const apiOutput = resolve(root, 'docs/components/generated', `${names.kebab}-api.md`);
+const apiSource = resolve(
+  root,
+  'packages/vue/src/components',
+  names.kebab,
+  'api.ts',
+);
+const apiOutput = resolve(
+  root,
+  'docs/components/generated',
+  `${names.kebab}-api.md`,
+);
 
 if (!existsSync(apiSource)) {
   throw new Error(`API metadata file does not exist: ${apiSource}`);
@@ -1212,7 +1240,10 @@ if (!Array.isArray(api)) {
 const table = [
   '| 属性 | 类型 | 默认值 | 说明 |',
   '| --- | --- | --- | --- |',
-  ...api.map(item => `| ${item.name} | \`${item.type}\` | ${item.default ?? '-'} | ${item.description} |`)
+  ...api.map(
+    item =>
+      `| ${item.name} | \`${item.type}\` | ${item.default ?? '-'} | ${item.description} |`,
+  ),
 ].join('\n');
 
 mkdirSync(dirname(apiOutput), { recursive: true });
@@ -1243,6 +1274,7 @@ git commit -m "feat: add component automation scripts"
 ## Task 7: Release Dry-Run Script
 
 **Files:**
+
 - Create: `scripts/release-check.ts`
 - Modify: `package.json`
 
@@ -1259,7 +1291,7 @@ function run(command: string, args: string[]) {
   const result = spawnSync(command, args, {
     cwd: root,
     stdio: 'inherit',
-    shell: false
+    shell: false,
   });
 
   if (result.status !== 0) {
@@ -1273,7 +1305,7 @@ run('pnpm', ['test']);
 run('pnpm', ['build']);
 run('pnpm', ['docs:build']);
 run('pnpm', ['--filter', '@custom-ui/example-vite', 'build']);
-run('pnpm', ['--filter', '@custom-ui/vue', 'exec', 'npm', 'pack', '--dry-run']);
+run('pnpm', ['--filter', 'custom-ui-vue', 'exec', 'npm', 'pack', '--dry-run']);
 
 console.log('\nRelease dry-run completed without publishing.');
 ```
@@ -1298,6 +1330,7 @@ git commit -m "feat: add release dry-run check"
 ## Task 8: AI Skills
 
 **Files:**
+
 - Create: `.agents/skills/development-spec/SKILL.md`
 - Create: `.agents/skills/create-component/SKILL.md`
 - Create: `.agents/skills/docs-writer/SKILL.md`
@@ -1316,7 +1349,7 @@ description: Custom UI Vue component library standards for components, docs, dem
 
 # Development Spec
 
-Use this skill whenever creating, reviewing, or documenting `@custom-ui/vue` components.
+Use this skill whenever creating, reviewing, or documenting `custom-ui-vue` components.
 
 ## Component Rules
 
@@ -1356,7 +1389,7 @@ description: Create or update a Custom UI Vue component using the project automa
 
 # Create Component
 
-Use this skill when the user asks to add or update a component in `@custom-ui/vue`.
+Use this skill when the user asks to add or update a component in `custom-ui-vue`.
 
 ## Required Flow
 
@@ -1445,7 +1478,7 @@ Use this skill before any release decision.
 1. Run `pnpm release:check`.
 2. Confirm no npm publish command ran.
 3. Inspect the `npm pack --dry-run` output for accidental files.
-4. Confirm the package is still named `@custom-ui/vue` unless the user has approved a final package name.
+4. Confirm the package is still named `custom-ui-vue` unless the user has approved a final package name.
 5. Summarize blockers before any real release.
 ```
 
@@ -1459,6 +1492,7 @@ git commit -m "docs: add custom ui ai skills"
 ## Task 9: Final Verification
 
 **Files:**
+
 - Modify only files needed to fix verification failures.
 
 - [x] **Step 1: Run full verification**

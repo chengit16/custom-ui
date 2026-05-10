@@ -4,10 +4,10 @@
 
 ```vue
 <script setup lang="ts">
-import { CustomProvider, createCustomTheme } from '@custom-ui/vue';
+import { CustomProvider, createCustomTheme } from '@danran_chen/custom-ui-vue';
 
 const themeOverrides = createCustomTheme({
-  primaryColor: '#2080f0'
+  primaryColor: '#2080f0',
 });
 </script>
 

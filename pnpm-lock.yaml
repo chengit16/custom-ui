@@ -74,7 +74,7 @@ importers:
 
   docs:
     dependencies:
-      '@custom-ui/vue':
+      '@danran_chen/custom-ui-vue':
         specifier: workspace:*
         version: link:../packages/vue
       naive-ui:
@@ -93,7 +93,7 @@ importers:
 
   examples/vite:
     dependencies:
-      '@custom-ui/vue':
+      '@danran_chen/custom-ui-vue':
         specifier: workspace:*
         version: link:../../packages/vue
       naive-ui:

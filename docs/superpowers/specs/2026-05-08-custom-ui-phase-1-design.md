@@ -10,7 +10,7 @@ The first phase is not about shipping many components. It is about building the 
 
 ## Decisions
 
-- Package name for now: `@custom-ui/vue`.
+- Package name for now: `custom-ui-vue`.
 - Documentation site name for now: `Custom UI`.
 - Main documentation tool: VitePress.
 - Component stack: Vue 3, TypeScript, Vite, Naive UI.
@@ -91,7 +91,7 @@ custom-ui/
 
 ## Component Package Design
 
-`packages/vue` will expose the public package `@custom-ui/vue`.
+`packages/vue` will expose the public package `custom-ui-vue`.
 
 The component package should:
 
@@ -357,9 +357,9 @@ Mitigation: document the rename step before publishing and include package-name 
 Phase 1 is complete when:
 
 - The monorepo installs successfully.
-- `@custom-ui/vue` builds and emits types.
+- `custom-ui-vue` builds and emits types.
 - VitePress starts and builds.
-- The examples app can import `@custom-ui/vue`.
+- The examples app can import `custom-ui-vue`.
 - `scripts/create-component` can scaffold a component workflow.
 - `DemoBlock` can display a demo and its source.
 - `scripts/check-component` can validate scaffold completeness.

@@ -44,7 +44,7 @@ import typeSource from '../../packages/vue/src/components/button/demo/type.vue?r
 Button 基于 Naive UI 的 `NButton` 二次封装，保留常用按钮状态，并使用 `CustomButton` 作为对外组件名。
 
 ```ts
-import { CustomButton } from '@custom-ui/vue';
+import { CustomButton } from '@danran_chen/custom-ui-vue';
 ```
 
 ## 代码演示

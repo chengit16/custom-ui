@@ -8,4 +8,4 @@ pnpm docs:dev
 pnpm example:dev
 ```
 
-组件库包名暂定为 `@custom-ui/vue`。真实发布前可以替换为正式 scope。
+组件库包名为 `@danran_chen/custom-ui-vue`。

@@ -6,8 +6,8 @@
     "declaration": true,
     "emitDeclarationOnly": false,
     "paths": {
-      "@custom-ui/vue": ["src/index.ts"],
-      "@custom-ui/vue/*": ["src/*"]
+      "@danran_chen/custom-ui-vue": ["src/index.ts"],
+      "@danran_chen/custom-ui-vue/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue"],

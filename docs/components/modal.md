@@ -8,7 +8,7 @@ import basicSource from '../../packages/vue/src/components/modal/demo/basic.vue?
 Modal 基于 Naive UI 的 `NModal` 二次封装，提供常用弹窗展示、标题和关闭行为。
 
 ```ts
-import { Modal } from '@custom-ui/vue';
+import { Modal } from '@danran_chen/custom-ui-vue';
 ```
 
 ## 基本形状

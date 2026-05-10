@@ -12,16 +12,20 @@ function run(command: string, args: string[]) {
   const result = spawnSync(executable, args, {
     cwd: root,
     stdio: 'inherit',
-    shell: false
+    shell: false,
   });
 
   if (result.error) {
-    console.error(`Failed to run "${command} ${args.join(' ')}": ${result.error.message}`);
+    console.error(
+      `Failed to run "${command} ${args.join(' ')}": ${result.error.message}`,
+    );
     process.exit(1);
   }
 
   if (result.signal) {
-    console.error(`Command was terminated by signal ${result.signal}: ${command} ${args.join(' ')}`);
+    console.error(
+      `Command was terminated by signal ${result.signal}: ${command} ${args.join(' ')}`,
+    );
     process.exit(1);
   }
 
@@ -54,14 +58,21 @@ function findSmokeTestDistFiles(dir: string): string[] {
 }
 
 function assertNoSmokeTestReleaseArtifacts() {
-  const publicComponentIndex = resolve(root, 'packages/vue/src/components/index.ts');
+  const publicComponentIndex = resolve(
+    root,
+    'packages/vue/src/components/index.ts',
+  );
   const distDir = resolve(root, 'packages/vue/dist');
   const blockers: string[] = [];
 
   if (existsSync(publicComponentIndex)) {
     const source = readFileSync(publicComponentIndex, 'utf8');
 
-    if (/export\s+(?:\*|\{[^}]*SmokeTest[^}]*\})\s+from\s+['"]\.\/smoke-test(?:\/index)?['"]\s*;?/.test(source)) {
+    if (
+      /export\s+(?:\*|\{[^}]*SmokeTest[^}]*\})\s+from\s+['"]\.\/smoke-test(?:\/index)?['"]\s*;?/.test(
+        source,
+      )
+    ) {
       blockers.push(`${publicComponentIndex} still publicly exports SmokeTest`);
     }
   }
@@ -72,15 +83,15 @@ function assertNoSmokeTestReleaseArtifacts() {
     blockers.push(
       `packages/vue/dist contains smoke-test release artifacts:\n${distSmokeTestFiles
         .map(path => `- ${path}`)
-        .join('\n')}`
+        .join('\n')}`,
     );
   }
 
   if (blockers.length > 0) {
     console.error(
       `\nRelease dry-run blocked: SmokeTest proof scaffold is still publicly releasable.\n\n${blockers.join(
-        '\n\n'
-      )}\n\nRemove the public SmokeTest export and rebuild without smoke-test dist artifacts before packaging. No publish command was run.`
+        '\n\n',
+      )}\n\nRemove the public SmokeTest export and rebuild without smoke-test dist artifacts before packaging. No publish command was run.`,
     );
     process.exit(1);
   }
@@ -93,6 +104,13 @@ run('pnpm', ['build']);
 run('pnpm', ['docs:build']);
 run('pnpm', ['--filter', '@custom-ui/example-vite', 'build']);
 assertNoSmokeTestReleaseArtifacts();
-run('pnpm', ['--filter', '@custom-ui/vue', 'exec', 'npm', 'pack', '--dry-run']);
+run('pnpm', [
+  '--filter',
+  '@danran_chen/custom-ui-vue',
+  'exec',
+  'npm',
+  'pack',
+  '--dry-run',
+]);
 
 console.log('\nRelease dry-run completed without publishing.');

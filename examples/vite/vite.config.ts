@@ -6,7 +6,9 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@custom-ui/vue': fileURLToPath(new URL('../../packages/vue/src/index.ts', import.meta.url))
-    }
-  }
+      '@danran_chen/custom-ui-vue': fileURLToPath(
+        new URL('../../packages/vue/src/index.ts', import.meta.url),
+      ),
+    },
+  },
 });

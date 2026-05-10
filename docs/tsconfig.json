@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@custom-ui/vue": ["../packages/vue/src/index.ts"]
+      "@danran_chen/custom-ui-vue": ["../packages/vue/src/index.ts"]
     }
   },
   "include": [

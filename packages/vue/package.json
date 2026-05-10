@@ -1,10 +1,15 @@
 {
-  "name": "@custom-ui/vue",
-  "version": "0.0.0",
+  "name": "@danran_chen/custom-ui-vue",
+  "version": "0.0.1",
   "description": "Custom UI Vue component library built on Naive UI.",
   "type": "module",
-  "sideEffects": ["**/*.css", "**/*.vue"],
-  "files": ["dist"],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.vue"
+  ],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

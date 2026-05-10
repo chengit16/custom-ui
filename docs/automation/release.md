@@ -8,6 +8,12 @@ pnpm release:check
 
 该命令必须执行类型检查、测试、构建、文档构建和 `npm pack --dry-run`，不能包含真实发布步骤。
 
+真实发布时不要在仓库根目录执行 `npm publish`，应该使用：
+
+```bash
+pnpm publish:vue
+```
+
 ## 文档部署
 
 文档站使用 GitHub Pages 自动部署。代码推送到 `main` 分支后，GitHub Actions 会自动执行：
