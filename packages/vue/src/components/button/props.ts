@@ -12,7 +12,7 @@ export type ButtonGroupDirection = 'horizontal' | 'vertical';
 
 export const ButtonProps = {
   /**
-   * 按钮类型测试1
+   * 按钮类型
    *
    * 用于控制按钮的语义色，可选值为 `default`、`primary`、`success`、`info`、`warning`、`error`。
    */

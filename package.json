@@ -12,7 +12,7 @@
     "docs:dev": "pnpm --filter @custom-ui/docs dev",
     "docs:build": "pnpm --filter @custom-ui/docs build",
     "example:dev": "pnpm --filter @custom-ui/example-vite dev",
-    "prepack": "npx husky",
+    "prepack": "pnpm exec husky",
     "lint": "eslint .",
     "typecheck": "pnpm --filter @custom-ui/vue typecheck && pnpm --filter @custom-ui/docs typecheck && pnpm --filter @custom-ui/example-vite typecheck",
     "test": "vitest run",
