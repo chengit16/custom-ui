@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   title: 'Custom UI',
   description: 'Vue 3 component library built on Naive UI.',
+  base: '/custom-ui/',
   cleanUrls: true,
   srcExclude: ['superpowers/**'],
   themeConfig: {
@@ -11,7 +12,7 @@ export default defineConfig({
       { text: '快速开始', link: '/guide/getting-started' },
       { text: '基础组件', link: '/components/' },
       { text: '自动化', link: '/automation/component-workflow' },
-      { text: 'GitLab', link: 'https://gitlab.com/' },
+      { text: 'GitHub', link: 'https://github.com/chengit16/custom-ui' },
     ],
     sidebar: {
       '/guide/': [
