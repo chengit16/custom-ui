@@ -121,7 +121,50 @@ pnpm release:check
 
 为了兼容 IDEA、Cursor 等 GUI Git 环境，hook 会通过登录 shell 查找 pnpm，避免出现 `pnpm: command not found`。
 
-## 7. 第一次拉取后的验证
+## 7. Git 提交规范
+
+项目使用 Conventional Commit 格式，并要求提交说明使用中文。这样后续 `pnpm changeset:auto` 读取 git 记录生成版本日志时，日志内容天然就是中文。
+
+格式：
+
+```text
+<type>: <中文说明>
+```
+
+常用类型：
+
+- `feat`：新增功能、组件或能力。
+- `fix`：修复问题。
+- `docs`：文档变更。
+- `chore`：工程配置、依赖、脚本等维护工作。
+- `refactor`：重构，不改变对外行为。
+- `test`：测试相关变更。
+- `build`：构建或发布相关变更。
+- `ci`：CI/CD 流程变更。
+
+推荐示例：
+
+```bash
+git commit -m "feat: 新增 Modal 弹窗组件"
+git commit -m "fix: 修复暗黑模式侧栏背景"
+git commit -m "docs: 补充 npm 发布操作手册"
+git commit -m "chore: 调整版本日志自动生成脚本"
+```
+
+不推荐：
+
+```bash
+git commit -m "feat: add modal component"
+git commit -m "update docs"
+```
+
+如果有破坏性变更，使用 `!` 标记，并在正文说明影响范围：
+
+```bash
+git commit -m "feat!: 调整 Button 类型命名"
+```
+
+## 8. 第一次拉取后的验证
 
 后续维护者第一次拉取项目后，建议按顺序执行：
 

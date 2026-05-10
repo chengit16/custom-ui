@@ -117,8 +117,23 @@ function parseCommits(raw) {
 }
 
 function describeCommit(commit) {
-  const scope = commit.scope ? `(${commit.scope})` : '';
-  return `${commit.type}${scope}: ${commit.subject}`;
+  const labelMap = {
+    feat: '新增',
+    fix: '修复',
+    docs: '文档',
+    refactor: '重构',
+    chore: '维护',
+    test: '测试',
+    build: '构建',
+    ci: '流程',
+    perf: '性能',
+    style: '样式',
+    revert: '回退',
+    other: '更新',
+  };
+  const scope = commit.scope ? `（${commit.scope}）` : '';
+  const label = labelMap[commit.type] ?? labelMap.other;
+  return `${label}${scope}：${commit.subject}`;
 }
 
 function toSectionTitle(commit) {
@@ -175,7 +190,6 @@ function buildSections(commits) {
 function buildContent(commits, baseRef) {
   const sections = buildSections(commits);
   const bump = getBumpLevel(commits);
-  const shortBase = baseRef.slice(0, 7);
   const shortHead = runGit(['rev-parse', '--short', 'HEAD']);
 
   const lines = [
@@ -183,7 +197,7 @@ function buildContent(commits, baseRef) {
     `'${packageName}': ${bump}`,
     '---',
     '',
-    `自动生成的版本日志草稿，来源于 \`git log ${shortBase}..${shortHead}\`，基线取最近一次版本/日志提交。`,
+    `自动生成的版本日志草稿，来源于 \`git log ${baseRef}..${shortHead}\`，基线取最近一次 release tag。`,
     '',
   ];
 
