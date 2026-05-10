@@ -3,6 +3,8 @@ layout: home
 ---
 
 <script setup>
+import { withBase } from 'vitepress';
+
 const features = [
   { title: '文档站', text: 'VitePress 驱动，结构清楚，方便逐步扩展。' },
   { title: '组件库', text: '基于 Naive UI 二次封装，保留稳定、常用的交互。' },
@@ -18,9 +20,9 @@ const features = [
   </p>
 
   <div class="home-actions">
-    <a href="/guide/getting-started">快速开始</a>
-    <a href="/components/">基础组件</a>
-    <a href="/automation/component-workflow">自动化流程</a>
+    <a :href="withBase('/guide/getting-started')">快速开始</a>
+    <a :href="withBase('/components/')">基础组件</a>
+    <a :href="withBase('/automation/component-workflow')">自动化流程</a>
   </div>
 
   <div class="home-grid">
